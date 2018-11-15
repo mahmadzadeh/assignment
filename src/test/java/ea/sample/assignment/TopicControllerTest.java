@@ -1,6 +1,7 @@
 package ea.sample.assignment;
 
 import java.util.HashSet;
+import java.util.Stack;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 
 @RunWith( SpringRunner.class )
@@ -51,6 +53,36 @@ public class TopicControllerTest
 		mockMvc.perform( MockMvcRequestBuilders.get( "/topics/sport" ) ).andExpect( status().isNotFound() );
 
 		verify( mockTopicsService ).getTopic( anyString() );
+	}
+
+	@Test
+	public void givenInvalidTopicThenGetMessagesReturnsNotFound() throws Exception
+	{
+		when( mockTopicsService.getTopicMessages( anyString() ) ).thenThrow( new TopicNotFoundException( "some error" ) );
+
+		mockMvc.perform( MockMvcRequestBuilders.get( "/topics/sport/messages" ) ).andExpect( status().isNotFound() );
+
+		verify( mockTopicsService ).getTopicMessages( anyString() );
+
+	}
+
+	@Test
+	public void givenValidTopicThenGetMessagesReturnsLastTenMessages() throws Exception
+	{
+		Stack<Message> messages = new Stack<>();
+		messages.push( new Message( 1, "first" ) );
+		messages.push( new Message( 2, "second" ) );
+		messages.push( new Message( 3, "third" ) );
+		messages.push( new Message( 4, "fourth" ) );
+
+		when( mockTopicsService.getTopicMessages( anyString() ) ).thenReturn( messages );
+
+		mockMvc.perform( MockMvcRequestBuilders.get( "/topics/sport/messages" ) )
+				.andExpect( status().isOk() )
+				.andExpect( jsonPath( "messages" ).value(  hasSize( 1 ) ) );
+
+		verify( mockTopicsService ).getTopicMessages( anyString() );
+
 	}
 
 }
