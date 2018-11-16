@@ -1,5 +1,6 @@
 package ea.sample.assignment;
 
+import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +26,11 @@ public class TopicServiceTest {
 
     @Before
     public void setUp() {
-        topicService = new TopicService( topicRepository );
+        topicService = new TopicService( topicRepository, null );
     }
 
     @Test
-    public void givenRepositoryOfTopicsThenGetTopicsReturnAllOfThem() throws Exception {
+    public void givenRepositoryOfTopicsThenGetTopicsReturnAllOfThem() {
         when( topicRepository.getTopics() ).thenReturn( new HashSet<>() );
 
         Set<Topic> topics = topicService.getTopics();
@@ -38,19 +39,28 @@ public class TopicServiceTest {
     }
 
     @Test(expected = TopicNotFoundException.class)
-    public void givenInvalidTopicNameThenThrowTopicNotFound() throws Exception {
+    public void givenInvalidTopicNameThenThrowTopicNotFound() {
         when( topicRepository.getTopic( anyString() ) ).thenReturn( Optional.empty() );
 
         topicService.getTopic( anyString() );
     }
 
     @Test
-    public void givenValidTopicNameThenReturnIt() throws Exception {
-        when( topicRepository.getTopic( anyString() ) ).thenReturn( Optional.of( new Topic( "sports" ) ) );
+    public void givenValidTopicNameThenReturnIt() {
+        when( topicRepository.getTopic( anyString() ) ).thenReturn( Optional.of( new Topic( 1, "sports" ) ) );
 
         Topic topic = topicService.getTopic( anyString() );
 
         assertThat( topic.getName() ).isEqualTo( "sports" );
+    }
+
+    @Test
+    public void givenTopicNameDoesNotExistAndValidMsgThenCreateTopicAndAddMessage() {
+        when( topicRepository.getTopic( anyString() ) ).thenReturn( Optional.empty() );
+
+        when( topicRepository.createMessageForTopic( anyString(), anyString() ) )
+                .thenReturn( new Message( 1, "name" ) );
+
     }
 
 }

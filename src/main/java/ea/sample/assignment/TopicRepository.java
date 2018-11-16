@@ -13,6 +13,14 @@ public class TopicRepository {
         return new HashSet<>( inMemDb.values() );
     }
 
+    public Topic createTopic( String topicName ) {
+        Topic topic = new Topic( IdGenerator.nextId(), topicName );
+
+        inMemDb.put( topicName, topic );
+
+        return topic;
+    }
+
     public Optional<Topic> getTopic( String name ) {
         return Optional.ofNullable( inMemDb.get( name ) );
     }
@@ -36,6 +44,21 @@ public class TopicRepository {
         return topic.getMessages()
                 .stream()
                 .filter( msg -> msg.getId() == msgId )
-                .findFirst().orElseThrow( () -> new MessageNotFoundException( "Invalid msg id given" ) );
+                .findFirst()
+                .orElseThrow( () -> new MessageNotFoundException( "Invalid msg id given" ) );
+    }
+
+    public Message createMessageForTopic( String topicName, String messageContent ) {
+        Optional<Topic> topic = getTopic( topicName );
+
+        Message message = new Message( IdGenerator.nextId(), messageContent );
+
+        if ( topic.isPresent() ) {
+            topic.get().addMessage( message );
+        } else {
+            createTopic( topicName ).addMessage( message );
+        }
+
+        return message;
     }
 }

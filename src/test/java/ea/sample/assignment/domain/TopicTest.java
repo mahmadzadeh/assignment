@@ -11,7 +11,7 @@ public class TopicTest {
 
     @Test
     public void getMessages() throws Exception {
-        Topic topic = new Topic( "" );
+        Topic topic = new Topic( 1, "" );
 
         topic.addMessage( new Message( 1, "m1" ) );
         topic.addMessage( new Message( 1, "m2" ) );
@@ -25,7 +25,7 @@ public class TopicTest {
 
     @Test
     public void getLast_N_messageWhen_N_BiggerThanMessageList() {
-        Topic topic = new Topic( "" );
+        Topic topic = new Topic( 1, "" );
 
         topic.addMessage( new Message( 1, "m1" ) );
         topic.addMessage( new Message( 1, "m2" ) );
@@ -36,7 +36,7 @@ public class TopicTest {
 
     @Test
     public void getLast_N_messageWhen_N_EqualToMessageList() {
-        Topic topic = new Topic( "" );
+        Topic topic = new Topic( 1, "" );
 
         topic.addMessage( new Message( 1, "m1" ) );
         topic.addMessage( new Message( 1, "m2" ) );
@@ -48,7 +48,7 @@ public class TopicTest {
 
     @Test
     public void getLast_N_messageWhen_N_SmallerThanMessageList() {
-        Topic topic = new Topic( "" );
+        Topic topic = new Topic( 1, "" );
 
         topic.addMessage( new Message( 1, "m1" ) );
         topic.addMessage( new Message( 2, "m2" ) );

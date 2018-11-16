@@ -1,4 +1,4 @@
-package com.ea.chat.scorer.com.ea.chat.score;
+package com.ea.chat.score;
 
 import com.ea.chat.score.interfaces.IChatScorer;
 

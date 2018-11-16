@@ -15,8 +15,8 @@ public class TopicRepositoryTest {
     private final String TEST_TOPIC_NAME_2 = "someothername";
 
 
-    private final Topic TEST_TOPIC_WITH_2_MSGS = new Topic( TEST_TOPIC_NAME );
-    private final Topic TEST_TOPIC_WITH_NO_MSG = new Topic( TEST_TOPIC_NAME_2 );
+    private final Topic TEST_TOPIC_WITH_2_MSGS = new Topic( 1, TEST_TOPIC_NAME );
+    private final Topic TEST_TOPIC_WITH_NO_MSG = new Topic( 1, TEST_TOPIC_NAME_2 );
 
     private TopicRepository topicRepository;
 

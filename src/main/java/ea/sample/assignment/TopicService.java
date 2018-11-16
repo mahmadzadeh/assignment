@@ -1,5 +1,6 @@
 package ea.sample.assignment;
 
+import com.ea.chat.score.interfaces.IChatScorer;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 
@@ -9,9 +10,11 @@ import java.util.Set;
 
 public class TopicService {
     private final TopicRepository topicRepository;
+    private final IChatScorer scorer;
 
-    public TopicService( TopicRepository topicRepository ) {
+    public TopicService( TopicRepository topicRepository, IChatScorer scorer ) {
         this.topicRepository = topicRepository;
+        this.scorer = scorer;
     }
 
     public Set<Topic> getTopics() {
@@ -29,10 +32,10 @@ public class TopicService {
     }
 
     public Message getTopicMessage( String topicName, long msgId ) {
-        return topicRepository.getTopicMessageWithId( topicName, msgId);
+        return topicRepository.getTopicMessageWithId( topicName, msgId );
     }
 
     public Message createMessageForTopic( String topicName, Message message ) {
-        return null;
+        return topicRepository.createMessageForTopic( topicName, message.getMessage() );
     }
 }

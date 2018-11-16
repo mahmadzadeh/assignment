@@ -1,6 +1,5 @@
 package ea.sample.assignment;
 
-import com.google.gson.Gson;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 import org.junit.Test;
@@ -39,7 +38,7 @@ public class TopicControllerTest {
     @Test
     public void getTopics_shouldReturnTopics() throws Exception {
         HashSet<Topic> t = new HashSet<>();
-        t.add( new Topic( "name" ) );
+        t.add( new Topic( 1, "name" ) );
 
         when( mockTopicsService.getTopics() ).thenReturn( t );
 
