@@ -1,52 +1,41 @@
 package ea.sample.assignment;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 
-public class TopicRepository
-{
-	private final ConcurrentHashMap<String, Topic> inMemDb = new ConcurrentHashMap<>();
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-	public Set<Topic> getTopics()
-	{
-		return new HashSet<>( inMemDb.values() );
-	}
+public class TopicRepository {
+    private final ConcurrentHashMap<String, Topic> inMemDb = new ConcurrentHashMap<>();
 
-	public Optional<Topic> getTopic( String name )
-	{
-		return Optional.ofNullable( inMemDb.get( name ) );
-	}
+    public Set<Topic> getTopics() {
+        return new HashSet<>( inMemDb.values() );
+    }
 
-	public void addTopic( String name, Topic topic )
-	{
-		Objects.requireNonNull( name );
-		Objects.requireNonNull( topic );
+    public Optional<Topic> getTopic( String name ) {
+        return Optional.ofNullable( inMemDb.get( name ) );
+    }
 
-		inMemDb.put( name, topic );
-	}
+    public void addTopic( String name, Topic topic ) {
+        Objects.requireNonNull( name );
+        Objects.requireNonNull( topic );
 
-	public Collection<Message> getMessages( String topicName, int count )
-	{
-		return getTopic( topicName )
-				.map( topic -> topic.getMessages() )
-				.map( col -> getTopCount(col, count) )
-				.orElse( Collections.EMPTY_LIST );
-	}
+        inMemDb.put( name, topic );
+    }
 
-	private  Collection<Message> getTopCount( Collection<Message> msgs , int count )
-	{
-		for ( int i = 0; i < count; i++ )
-		{
+    public List<Message> getLastNMessages( String topicName, int n ) {
+        return getTopic( topicName )
+                .map( topic -> topic.getLastN( n ) )
+                .orElseThrow( () -> new TopicNotFoundException( "Invalid topic name " + topicName ) );
+    }
 
-		}
-		return null;
-	}
+    public Message getTopicMessageWithId( String topicName, long msgId ) {
+        Topic topic = getTopic( topicName ).orElseThrow( () -> new TopicNotFoundException( "Invalid topic name " + topicName ) );
+
+        return topic.getMessages()
+                .stream()
+                .filter( msg -> msg.getId() == msgId )
+                .findFirst().orElseThrow( () -> new MessageNotFoundException( "Invalid msg id given" ) );
+    }
 }

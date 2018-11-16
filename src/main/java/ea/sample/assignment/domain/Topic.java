@@ -1,34 +1,37 @@
 package ea.sample.assignment.domain;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Stack;
 
-public class Topic
-{
-	private final String name;
-	private final Stack<Message> messages;
+import static java.util.Collections.unmodifiableList;
 
-	public Topic( String name )
-	{
-		this.name = name;
-		messages = new Stack<>();
-	}
+public class Topic {
+    private final String name;
+    private final List<Message> messages;
 
-	public String getName()
-	{
-		return name;
-	}
+    public Topic( String name ) {
+        this.name = name;
+        messages = new Stack<>();
+    }
 
-	public void addMessage( Message msg )
-	{
-		messages.push( msg );
-	}
+    public String getName() {
+        return name;
+    }
 
-	public Collection<Message> getMessages()
-	{
-		Stack<Message> shallowCopy = new Stack<>();
-		shallowCopy.addAll( messages );
+    public void addMessage( Message msg ) {
+        messages.add( msg );
+    }
 
-		return shallowCopy;
-	}
+    public List<Message> getMessages() {
+        return unmodifiableList( messages );
+    }
+
+    public List<Message> getLastN( int n ) {
+
+        return n > messages.size()
+                ? unmodifiableList( messages )
+                : unmodifiableList( messages.subList( messages.size() - n, messages.size() ) );
+    }
+
+
 }
