@@ -21,5 +21,5 @@ public interface ITopicRepository {
 
     Message getTopicMessageWithId( String topicName, long msgId );
 
-    Message createMessageForTopic( String topicName, String messageContent );
+    Message createMessageForTopic( String topicName, Message message );
 }

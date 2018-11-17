@@ -61,6 +61,11 @@ public class Message {
                 "id=" + id +
                 ", message='" + message + '\'' +
                 ", score=" + score +
+                ", userId=" + userId +
                 '}';
+    }
+
+    public long getUserId() {
+        return userId;
     }
 }

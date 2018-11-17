@@ -1,4 +1,4 @@
-package ea.sample.assignment;
+package ea.sample.assignment.dao;
 
 import ea.sample.assignment.domain.User;
 

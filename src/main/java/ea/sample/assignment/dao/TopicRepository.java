@@ -60,10 +60,8 @@ public class TopicRepository implements ITopicRepository {
     }
 
     @Override
-    public Message createMessageForTopic( String topicName, String messageContent ) {
+    public Message createMessageForTopic( String topicName, Message message ) {
         Optional<Topic> topic = read( topicName );
-
-        Message message = new Message( IdGenerator.nextId(), messageContent, 0, -1 );
 
         if ( topic.isPresent() ) {
             topic.get().addMessage( message );

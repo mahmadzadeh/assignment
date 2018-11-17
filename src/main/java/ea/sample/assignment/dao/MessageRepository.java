@@ -1,14 +1,16 @@
 package ea.sample.assignment.dao;
 
-import ea.sample.assignment.IUserRepository;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.exeptions.UserNotFoundException;
 import ea.sample.assignment.util.IdGenerator;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
+@Component
 public class MessageRepository implements IMessageRepository {
 
     private final ConcurrentHashMap<Long, Message> inMemDb = new ConcurrentHashMap<>();
@@ -27,6 +29,7 @@ public class MessageRepository implements IMessageRepository {
         }
 
         Message message = new Message( IdGenerator.nextId(), msg, 0, userId );
+
         inMemDb.put( message.getId(), message );
 
         return message;
@@ -34,11 +37,13 @@ public class MessageRepository implements IMessageRepository {
 
     @Override
     public Set<Message> readAll() {
-        return null;
+        return inMemDb
+                .values()
+                .stream().collect( Collectors.toSet() );
     }
 
     @Override
     public Optional<Message> read( long id ) {
-        return Optional.empty();
+        return Optional.ofNullable( inMemDb.get( id ) );
     }
 }

@@ -15,10 +15,12 @@ import java.util.Set;
 public class TopicService {
     private final ea.sample.assignment.dao.ITopicRepository topicRepository;
     private final IScoreQueue scoreQueue;
+    private final MessageService messageService;
 
-    public TopicService( ITopicRepository topicRepository, IScoreQueue scoreQueue ) {
+    public TopicService( ITopicRepository topicRepository, IScoreQueue scoreQueue, MessageService messageService ) {
         this.topicRepository = topicRepository;
         this.scoreQueue = scoreQueue;
+        this.messageService = messageService;
     }
 
     public Set<Topic> getTopics() {
@@ -41,7 +43,8 @@ public class TopicService {
 
     public Message createMessageForTopic( String topicName, Message msg ) {
 
-        Message message = topicRepository.createMessageForTopic( topicName, msg.getMessage() );
+        Message message = messageService.createMessage( msg.getMessage(), msg.getUserId() );
+        topicRepository.createMessageForTopic( topicName, message );
 
         scoreQueue.enqueue( message );
 
