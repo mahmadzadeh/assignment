@@ -41,7 +41,7 @@ public class TopicController {
 
     @PostMapping("/{topicName}/messages")
     public Message createMessageForTopic( @PathVariable String topicName, @RequestBody Message msg ) {
-        return topicService.createMessageForTopic( topicName, msg);
+        return topicService.createMessageForTopic( topicName, msg );
     }
 
     @ExceptionHandler

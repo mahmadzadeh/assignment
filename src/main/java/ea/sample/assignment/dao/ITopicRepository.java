@@ -1,4 +1,4 @@
-    package ea.sample.assignment.dao;
+package ea.sample.assignment.dao;
 
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;

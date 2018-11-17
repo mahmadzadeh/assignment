@@ -5,9 +5,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Message {
 
+    private final MessageScore score;
     private long id;
     private String message;
-    private final MessageScore score;
 
     public Message( long id, String message, MessageScore score ) {
         this.id = id;

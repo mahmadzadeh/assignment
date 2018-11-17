@@ -2,9 +2,18 @@ package com.ea.chat.score;
 
 import com.ea.chat.score.exceptions.ServiceUnavailableException;
 import com.ea.chat.score.interfaces.IChatScorer;
-import org.springframework.stereotype.Component;
 
 class ChatScorer implements IChatScorer {
+
+    private static void sleepUntil( final long end ) {
+        long now;
+        while ( ( now = System.currentTimeMillis() ) < end ) {
+            try {
+                Thread.sleep( end - now );
+            } catch ( InterruptedException e ) {
+            }
+        }
+    }
 
     @Override
     public int score( String message ) throws ServiceUnavailableException {
@@ -18,16 +27,6 @@ class ChatScorer implements IChatScorer {
             final long timeout = Math.round( Math.random() * 500 );
             sleepUntil( System.currentTimeMillis() + timeout );
             return (int) Math.round( message.length() * Math.PI * 42 );
-        }
-    }
-
-    private static void sleepUntil( final long end ) {
-        long now;
-        while ( ( now = System.currentTimeMillis() ) < end ) {
-            try {
-                Thread.sleep( end - now );
-            } catch ( InterruptedException e ) {
-            }
         }
     }
 

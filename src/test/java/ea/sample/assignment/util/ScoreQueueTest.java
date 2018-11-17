@@ -1,7 +1,6 @@
-package ea.sample.assignment;
+package ea.sample.assignment.util;
 
 import ea.sample.assignment.domain.Message;
-import ea.sample.assignment.util.ScoreQueue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
-import static ea.sample.assignment.IdGenerator.nextId;
+import static ea.sample.assignment.util.IdGenerator.nextId;
 import static org.junit.Assert.assertEquals;
 
 public class ScoreQueueTest {

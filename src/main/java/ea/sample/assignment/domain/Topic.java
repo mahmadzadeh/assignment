@@ -19,9 +19,10 @@ public class Topic {
         this.name = name;
         messages = new CopyOnWriteArrayList<>();
     }
-    protected Topic(){
-       id=0;
-       name="";
+
+    protected Topic() {
+        id = 0;
+        name = "";
         messages = new CopyOnWriteArrayList<>();
     }
 
