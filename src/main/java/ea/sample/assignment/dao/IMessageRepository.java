@@ -13,4 +13,5 @@ public interface IMessageRepository {
 
     Optional<Message> read( long id );
 
+    Set<Message> readMessagesForUser( long userId );
 }

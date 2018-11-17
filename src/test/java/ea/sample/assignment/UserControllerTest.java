@@ -15,7 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -75,7 +77,7 @@ public class UserControllerTest {
 
     @Test
     public void givenValidUserIdThenGetMessagesReturnsAllMessagesForUser() throws Exception {
-        List<Message> messages = getListOfTestMessages( 10 );
+        Set<Message> messages = getListOfTestMessages( 10 );
 
         when( mockUserService.getUserMessages( anyLong() ) ).thenReturn( messages );
 
@@ -90,7 +92,7 @@ public class UserControllerTest {
 
     @Test
     public void givenValidUserIdThenGetSubsReturnsAllTopicsSubedByUser() throws Exception {
-        List<Topic> subscriptions = getListOfTestTopics( 10 );
+        Set<Topic> subscriptions = getListOfTestTopics( 10 );
 
         when( mockUserService.getUserSubscribedTopics( anyLong() ) ).thenReturn( subscriptions );
 
@@ -123,9 +125,9 @@ public class UserControllerTest {
         verify( mockUserService ).createSubscriptionFor( anyLong(), any( Topic.class ) );
     }
 
-    private List<Message> getListOfTestMessages( int count ) {
+    private Set<Message> getListOfTestMessages( int count ) {
 
-        List<Message> messages = new ArrayList<>();
+        Set<Message> messages = new HashSet<>();
 
         for ( int i = 0; i < count; i++ ) {
             messages.add( new Message( i, UUID.randomUUID().toString(), 0, 0 ) );
@@ -134,9 +136,9 @@ public class UserControllerTest {
         return messages;
     }
 
-    private List<Topic> getListOfTestTopics( int count ) {
+    private Set<Topic> getListOfTestTopics( int count ) {
 
-        List<Topic> topics = new ArrayList<>();
+        Set<Topic> topics = new HashSet<>();
 
         for ( int i = 0; i < count; i++ ) {
             topics.add( new Topic( 111, UUID.randomUUID().toString() ) );

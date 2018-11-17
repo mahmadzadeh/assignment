@@ -46,4 +46,13 @@ public class MessageRepository implements IMessageRepository {
     public Optional<Message> read( long id ) {
         return Optional.ofNullable( inMemDb.get( id ) );
     }
+
+    @Override
+    public Set<Message> readMessagesForUser( long userId ) {
+        return inMemDb.values()
+                .stream()
+                .filter( message -> message.getUserId() == userId )
+                .collect( Collectors.toSet() );
+    }
+
 }

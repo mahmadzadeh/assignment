@@ -1,5 +1,6 @@
 package ea.sample.assignment.dao;
 
+import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.domain.User;
 
 import java.util.Optional;
@@ -13,4 +14,5 @@ public interface IUserRepository {
 
     Optional<User> read( long id );
 
+    Set<Topic> readTopics( long userId );
 }

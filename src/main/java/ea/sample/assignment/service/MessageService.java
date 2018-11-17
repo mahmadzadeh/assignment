@@ -27,6 +27,10 @@ public class MessageService {
         return message.orElseThrow( () -> new TopicNotFoundException( "Unable to find topic with id " + id ) );
     }
 
+    public Set<Message> getUserMessages( long userId ) {
+        return messageRepository.readMessagesForUser( userId );
+    }
+
     public Message createMessage( String msg, long userId ) {
 
         return messageRepository.create( msg, 0, userId );
