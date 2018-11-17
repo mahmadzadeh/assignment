@@ -1,7 +1,6 @@
 package ea.sample.assignment.util;
 
 import ea.sample.assignment.domain.Message;
-import ea.sample.assignment.util.IScoreQueue;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
