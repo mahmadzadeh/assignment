@@ -57,7 +57,7 @@ public class ThreadPoolManagerTest {
             throws InterruptedException, ExecutionException, TimeoutException {
 
         List<Message> toBeScored = new ArrayList<Message>() {{
-            add( new Message( 1, "", 0 ) );
+            add( new Message( 1, "", 0, 0 ) );
         }};
 
         when( fakeQueue.dequeueItems( anyInt() ) ).thenReturn( toBeScored );
@@ -75,7 +75,7 @@ public class ThreadPoolManagerTest {
             throws InterruptedException, ExecutionException, TimeoutException {
 
         List<Message> toBeScored = new ArrayList<Message>() {{
-            add( new Message( 1, "", 0 ) );
+            add( new Message( 1, "", 0, 0 ) );
         }};
 
         when( fakeQueue.dequeueItems( anyInt() ) ).thenReturn( toBeScored );

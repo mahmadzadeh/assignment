@@ -2,6 +2,9 @@ package ea.sample.assignment;
 
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.exeptions.MessageNotFoundException;
+import ea.sample.assignment.exeptions.TopicNotFoundException;
+import ea.sample.assignment.service.TopicService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +113,7 @@ public class TopicControllerTest {
         int expectedId = 2;
 
         when( mockTopicsService.getTopicMessage( anyString(), anyLong() ) )
-                .thenReturn( new Message( expectedId, "msg", 0 ) );
+                .thenReturn( new Message( expectedId, "msg", 0, 0 ) );
 
         mockMvc.perform( MockMvcRequestBuilders.get( "/topics/sports/messages/2" ) )
                 .andExpect( status().isOk() )
@@ -125,7 +128,7 @@ public class TopicControllerTest {
         String newMsgJson = "{\"message\":\"newly created message\"}";
 
         when( mockTopicsService.createMessageForTopic( anyString(), any( Message.class ) ) )
-                .thenReturn( new Message( 1, "newly created message", 0 ) );
+                .thenReturn( new Message( 1, "newly created message", 0, 0 ) );
 
         mockMvc.perform(
                 post( "/topics/sports/messages" )
@@ -142,7 +145,7 @@ public class TopicControllerTest {
         List<Message> messages = new ArrayList<>();
 
         for ( int i = 0; i < count; i++ ) {
-            messages.add( new Message( i, UUID.randomUUID().toString(), 0 ) );
+            messages.add( new Message( i, UUID.randomUUID().toString(), 0, 0 ) );
         }
 
         return messages;

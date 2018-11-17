@@ -20,7 +20,7 @@ public class ScoreMessageTaskTest {
 
     @Mock
     private IChatScorer mockScorer;
-    private Message fakeMsg = new Message( 1, "asda", 0 );
+    private Message fakeMsg = new Message( 1, "asda", 0, 0 );
 
     private ScoreMessageTask task;
 

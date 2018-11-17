@@ -2,7 +2,6 @@ package ea.sample.assignment.util;
 
 import com.ea.chat.score.interfaces.IChatScorer;
 import ea.sample.assignment.domain.Message;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +9,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.*;
 
-@Component
 public class ThreadPoolManager {
 
     public static final int TIMEOUT = 2;

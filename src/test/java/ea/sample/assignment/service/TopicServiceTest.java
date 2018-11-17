@@ -1,8 +1,9 @@
-package ea.sample.assignment;
+package ea.sample.assignment.service;
 
 import ea.sample.assignment.dao.ITopicRepository;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.util.ScoreQueue;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,9 +66,9 @@ public class TopicServiceTest {
     @Test
     public void givenTopicNameDoesNotExistAndValidMsgThenCreateTopicAndAddMessage() {
         when( topicRepository.createMessageForTopic( anyString(), anyString() ) )
-                .thenReturn( new Message( 1, "msg", 0 ) );
+                .thenReturn( new Message( 1, "msg", 0, 0 ) );
 
-        Message newMsg = topicService.createMessageForTopic( "topic", new Message( 1, "msg", 0 ) );
+        Message newMsg = topicService.createMessageForTopic( "topic", new Message( 1, "msg", 0, 0 ) );
 
         assertThat( newMsg.getId() ).isEqualTo( 1 );
         assertThat( newMsg.getMessage() ).isEqualTo( "msg" );
@@ -76,11 +77,11 @@ public class TopicServiceTest {
     @Test
     public void newlyCreatedMsgIsQueuedToBeScored() {
         when( topicRepository.createMessageForTopic( anyString(), anyString() ) )
-                .thenReturn( new Message( 1, "msg", 0 ) );
+                .thenReturn( new Message( 1, "msg", 0, 0 ) );
 
         doNothing().when( messageScoreQueue ).enqueue( any( Message.class ) );
 
-        Message newMsg = topicService.createMessageForTopic( "topic", new Message( 1, "msg", 0 ) );
+        Message newMsg = topicService.createMessageForTopic( "topic", new Message( 1, "msg", 0, 0 ) );
 
         assertThat( newMsg.getId() ).isEqualTo( 1 );
         assertThat( newMsg.getMessage() ).isEqualTo( "msg" );

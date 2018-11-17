@@ -80,7 +80,7 @@ public class ScoreQueueTest {
 
     private void addMessagesToQueue( ScoreQueue queue, int count ) {
         for ( int i = 0; i < count; i++ ) {
-            queue.enqueue( new Message( nextId(), UUID.randomUUID().toString(), 0 ) );
+            queue.enqueue( new Message( nextId(), UUID.randomUUID().toString(), 0, 0 ) );
         }
     }
 }

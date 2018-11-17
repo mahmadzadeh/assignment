@@ -2,6 +2,9 @@ package ea.sample.assignment;
 
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.exeptions.MessageNotFoundException;
+import ea.sample.assignment.exeptions.TopicNotFoundException;
+import ea.sample.assignment.service.TopicService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

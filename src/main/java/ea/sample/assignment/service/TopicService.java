@@ -1,8 +1,9 @@
-package ea.sample.assignment;
+package ea.sample.assignment.service;
 
 import ea.sample.assignment.dao.ITopicRepository;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.util.IScoreQueue;
 import org.springframework.stereotype.Service;
 

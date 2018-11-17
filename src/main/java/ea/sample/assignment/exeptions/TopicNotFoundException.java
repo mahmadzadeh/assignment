@@ -1,4 +1,4 @@
-package ea.sample.assignment;
+package ea.sample.assignment.exeptions;
 
 public class TopicNotFoundException extends RuntimeException {
 

@@ -1,9 +1,9 @@
 package ea.sample.assignment.dao;
 
-import ea.sample.assignment.MessageNotFoundException;
-import ea.sample.assignment.TopicNotFoundException;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.exeptions.MessageNotFoundException;
+import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.util.IdGenerator;
 import org.springframework.stereotype.Component;
 
@@ -63,7 +63,7 @@ public class TopicRepository implements ITopicRepository {
     public Message createMessageForTopic( String topicName, String messageContent ) {
         Optional<Topic> topic = read( topicName );
 
-        Message message = new Message( IdGenerator.nextId(), messageContent, 0 );
+        Message message = new Message( IdGenerator.nextId(), messageContent, 0, -1 );
 
         if ( topic.isPresent() ) {
             topic.get().addMessage( message );

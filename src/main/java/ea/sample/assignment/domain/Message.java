@@ -8,16 +8,19 @@ public class Message {
     private long id;
     private String message;
     private int score;
+    private final long userId;
 
-    public Message( long id, String message, int score ) {
+    public Message( long id, String message, int score, long userId ) {
         this.id = id;
         this.message = message;
         this.score = score;
+        this.userId = userId;
     }
 
     protected Message() {
         // required by Jackson to deserialize object. This is the
         // only time the default constructor is used.
+        userId = -1;
     }
 
     public long getId() {
