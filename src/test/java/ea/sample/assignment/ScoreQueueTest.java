@@ -1,6 +1,7 @@
 package ea.sample.assignment;
 
 import ea.sample.assignment.domain.Message;
+import ea.sample.assignment.util.ScoreQueue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,12 +13,12 @@ import java.util.concurrent.CountDownLatch;
 import static ea.sample.assignment.IdGenerator.nextId;
 import static org.junit.Assert.assertEquals;
 
-public class MessageScoreQueueTest {
-    private MessageScoreQueue queue;
+public class ScoreQueueTest {
+    private ScoreQueue queue;
 
     @Before
     public void setUp() {
-        queue = new MessageScoreQueue();
+        queue = new ScoreQueue();
     }
 
     @Test
@@ -78,9 +79,9 @@ public class MessageScoreQueueTest {
         } );
     }
 
-    private void addMessagesToQueue( MessageScoreQueue queue, int count ) {
+    private void addMessagesToQueue( ScoreQueue queue, int count ) {
         for ( int i = 0; i < count; i++ ) {
-            queue.enqueue( new Message( nextId(), UUID.randomUUID().toString() ) );
+            queue.enqueue( new Message( nextId(), UUID.randomUUID().toString(), null ) );
         }
     }
 }

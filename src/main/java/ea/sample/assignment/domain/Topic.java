@@ -4,7 +4,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.List;
-import java.util.Stack;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.util.Collections.unmodifiableList;
@@ -18,6 +17,11 @@ public class Topic {
     public Topic( long id, String name ) {
         this.id = id;
         this.name = name;
+        messages = new CopyOnWriteArrayList<>();
+    }
+    protected Topic(){
+       id=0;
+       name="";
         messages = new CopyOnWriteArrayList<>();
     }
 

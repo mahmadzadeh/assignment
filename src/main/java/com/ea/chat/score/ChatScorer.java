@@ -2,6 +2,7 @@ package com.ea.chat.score;
 
 import com.ea.chat.score.exceptions.ServiceUnavailableException;
 import com.ea.chat.score.interfaces.IChatScorer;
+import org.springframework.stereotype.Component;
 
 class ChatScorer implements IChatScorer {
 

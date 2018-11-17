@@ -23,10 +23,9 @@ public class AssignmentApplicationTests {
 
     @Test
     public void testGettingTopics() {
-        ResponseEntity<Topic> responseEntity = testRestTemplate.getForEntity( "/topics", Topic.class );
+        ResponseEntity<Topic> responseEntity = testRestTemplate.getForEntity( "/topics/", Topic.class );
 
         assertThat( responseEntity.getStatusCode() ).isEqualTo( SC_OK );
-
     }
 
 }

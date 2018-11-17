@@ -7,15 +7,18 @@ public class Message {
 
     private long id;
     private String message;
+    private final MessageScore score;
 
-    public Message( long id, String message ) {
+    public Message( long id, String message, MessageScore score ) {
         this.id = id;
         this.message = message;
+        this.score = score;
     }
 
     protected Message() {
         // required by Jackson to deserialize object. This is the
         // only time the default constructor is used.
+        score = new NullMessageScore();
     }
 
     public long getId() {
@@ -36,7 +39,6 @@ public class Message {
 
         return new EqualsBuilder()
                 .append( getId(), message.getId() )
-                .append( getMessage(), message.getMessage() )
                 .isEquals();
     }
 
@@ -44,7 +46,6 @@ public class Message {
     public int hashCode() {
         return new HashCodeBuilder( 17, 37 )
                 .append( getId() )
-                .append( getMessage() )
                 .toHashCode();
     }
 
@@ -53,6 +54,7 @@ public class Message {
         return "Message{" +
                 "id=" + id +
                 ", message='" + message + '\'' +
+                ", score=" + score +
                 '}';
     }
 }

@@ -110,7 +110,7 @@ public class TopicControllerTest {
         int expectedId = 2;
 
         when( mockTopicsService.getTopicMessage( anyString(), anyLong() ) )
-                .thenReturn( new Message( expectedId, "msg" ) );
+                .thenReturn( new Message( expectedId, "msg", null ) );
 
         mockMvc.perform( MockMvcRequestBuilders.get( "/topics/sports/messages/2" ) )
                 .andExpect( status().isOk() )
@@ -125,7 +125,7 @@ public class TopicControllerTest {
         String newMsgJson = "{\"message\":\"newly created message\"}";
 
         when( mockTopicsService.createMessageForTopic( anyString(), any( Message.class ) ) )
-                .thenReturn( new Message( 1, "newly created message" ) );
+                .thenReturn( new Message( 1, "newly created message", null ) );
 
         mockMvc.perform(
                 post( "/topics/sports/messages" )
@@ -142,7 +142,7 @@ public class TopicControllerTest {
         List<Message> messages = new ArrayList<>();
 
         for ( int i = 0; i < count; i++ ) {
-            messages.add( new Message( i, UUID.randomUUID().toString() ) );
+            messages.add( new Message( i, UUID.randomUUID().toString(), null ) );
         }
 
         return messages;
