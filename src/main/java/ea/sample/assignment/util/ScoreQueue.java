@@ -23,10 +23,11 @@ public class ScoreQueue implements IScoreQueue {
 
         List<Message> toBeProcessed = new ArrayList<>();
 
-        for ( int i = 1; i <= size && !queue.isEmpty(); i++ ) {
+        for ( int i = 1; i <= size; i++ ) {
+
             Message message = queue.poll();
 
-            if ( message == null ) {
+            if ( isQueueEmpty( message ) ) {
                 break;
             }
 
@@ -44,4 +45,7 @@ public class ScoreQueue implements IScoreQueue {
         return this.queue.size();
     }
 
+    private boolean isQueueEmpty( Message message ) {
+        return message == null;
+    }
 }

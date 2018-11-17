@@ -13,9 +13,9 @@ public class TopicTest {
     public void getMessages() throws Exception {
         Topic topic = new Topic( 1, "" );
 
-        topic.addMessage( new Message( 1, "m1", null ) );
-        topic.addMessage( new Message( 1, "m2", null ) );
-        topic.addMessage( new Message( 1, "m3", null ) );
+        topic.addMessage( new Message( 1, "m1", 0 ) );
+        topic.addMessage( new Message( 1, "m2", 0 ) );
+        topic.addMessage( new Message( 1, "m3", 0 ) );
 
         Collection<Message> copy = topic.getMessages();
 
@@ -27,8 +27,8 @@ public class TopicTest {
     public void getLast_N_messageWhen_N_BiggerThanMessageList() {
         Topic topic = new Topic( 1, "" );
 
-        topic.addMessage( new Message( 1, "m1", null ) );
-        topic.addMessage( new Message( 1, "m2", null ) );
+        topic.addMessage( new Message( 1, "m1", 0 ) );
+        topic.addMessage( new Message( 1, "m2", 0 ) );
 
 
         assertThat( topic.getLastN( 10 ) ).isEqualTo( topic.getMessages() );
@@ -38,8 +38,8 @@ public class TopicTest {
     public void getLast_N_messageWhen_N_EqualToMessageList() {
         Topic topic = new Topic( 1, "" );
 
-        topic.addMessage( new Message( 1, "m1", null ) );
-        topic.addMessage( new Message( 1, "m2", null ) );
+        topic.addMessage( new Message( 1, "m1", 0 ) );
+        topic.addMessage( new Message( 1, "m2", 0 ) );
 
 
         assertThat( topic.getLastN( 2 ) ).isEqualTo( topic.getMessages() );
@@ -50,17 +50,17 @@ public class TopicTest {
     public void getLast_N_messageWhen_N_SmallerThanMessageList() {
         Topic topic = new Topic( 1, "" );
 
-        topic.addMessage( new Message( 1, "m1", null ) );
-        topic.addMessage( new Message( 2, "m2", null ) );
-        topic.addMessage( new Message( 3, "m3", null ) );
+        topic.addMessage( new Message( 1, "m1", 0 ) );
+        topic.addMessage( new Message( 2, "m2", 0 ) );
+        topic.addMessage( new Message( 3, "m3", 0 ) );
 
         int expectedSize = 2;
 
         List<Message> lastN = topic.getLastN( expectedSize );
 
         assertThat( lastN.size() ).isEqualTo( expectedSize );
-        assertThat( lastN.get( 0 ) ).isEqualTo( new Message( 2, "m2", null ) );
-        assertThat( lastN.get( 1 ) ).isEqualTo( new Message( 3, "m3", null ) );
+        assertThat( lastN.get( 0 ) ).isEqualTo( new Message( 2, "m2", 0 ) );
+        assertThat( lastN.get( 1 ) ).isEqualTo( new Message( 3, "m3", 0 ) );
     }
 
 }

@@ -1,6 +1,6 @@
-package ea.sample.assignment;
+package ea.sample.assignment.dao;
 
-import ea.sample.assignment.dao.TopicRepository;
+import ea.sample.assignment.TopicNotFoundException;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 import org.junit.Before;
@@ -25,14 +25,14 @@ public class TopicRepositoryTest {
     public void setUp() {
         ITopicRepository = new TopicRepository();
 
-        TEST_TOPIC_WITH_2_MSGS.addMessage( new Message( 1, "hey there", null ) );
-        TEST_TOPIC_WITH_2_MSGS.addMessage( new Message( 2, "how are ya", null ) );
+        TEST_TOPIC_WITH_2_MSGS.addMessage( new Message( 1, "hey there", 0 ) );
+        TEST_TOPIC_WITH_2_MSGS.addMessage( new Message( 2, "how are ya", 0 ) );
     }
 
 
     @Test
     public void givenNotTopicsInDbThenGetTopicsReturnsEmptySet() {
-        assertThat( ITopicRepository.getTopics() ).isEqualTo( new HashSet<>() );
+        assertThat( ITopicRepository.readAll() ).isEqualTo( new HashSet<>() );
     }
 
     @Test(expected = NullPointerException.class)
@@ -49,12 +49,12 @@ public class TopicRepositoryTest {
     public void canAddNewValidTopic() {
         ITopicRepository.addTopic( TEST_TOPIC_NAME, TEST_TOPIC_WITH_2_MSGS );
 
-        assertThat( ITopicRepository.getTopics().size() ).isEqualTo( 1 );
+        assertThat( ITopicRepository.readAll().size() ).isEqualTo( 1 );
     }
 
     @Test
     public void givenTopicsInDbThenGetTopicsReturnsThem() {
-        assertThat( ITopicRepository.getTopics() ).isEqualTo( new HashSet<>() );
+        assertThat( ITopicRepository.readAll() ).isEqualTo( new HashSet<>() );
     }
 
     @Test(expected = TopicNotFoundException.class)

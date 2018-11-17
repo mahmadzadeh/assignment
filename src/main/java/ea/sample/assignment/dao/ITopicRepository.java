@@ -9,11 +9,11 @@ import java.util.Set;
 
 public interface ITopicRepository {
 
-    Topic createTopic( String topicName );
+    Topic create( String topicName );
 
-    Set<Topic> getTopics();
+    Set<Topic> readAll();
 
-    Optional<Topic> getTopic( String name );
+    Optional<Topic> read( String name );
 
     void addTopic( String name, Topic topic );
 

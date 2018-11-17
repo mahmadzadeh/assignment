@@ -1,10 +1,10 @@
 package ea.sample.assignment.dao;
 
-import ea.sample.assignment.IdGenerator;
 import ea.sample.assignment.MessageNotFoundException;
 import ea.sample.assignment.TopicNotFoundException;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.util.IdGenerator;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -15,12 +15,12 @@ public class TopicRepository implements ITopicRepository {
     private final ConcurrentHashMap<String, Topic> inMemDb = new ConcurrentHashMap<>();
 
     @Override
-    public Set<Topic> getTopics() {
+    public Set<Topic> readAll() {
         return new HashSet<>( inMemDb.values() );
     }
 
     @Override
-    public Topic createTopic( String topicName ) {
+    public Topic create( String topicName ) {
         Topic topic = new Topic( IdGenerator.nextId(), topicName );
 
         inMemDb.put( topicName, topic );
@@ -29,7 +29,7 @@ public class TopicRepository implements ITopicRepository {
     }
 
     @Override
-    public Optional<Topic> getTopic( String name ) {
+    public Optional<Topic> read( String name ) {
         return Optional.ofNullable( inMemDb.get( name ) );
     }
 
@@ -43,14 +43,14 @@ public class TopicRepository implements ITopicRepository {
 
     @Override
     public List<Message> getLastNMessages( String topicName, int n ) {
-        return getTopic( topicName )
+        return read( topicName )
                 .map( topic -> topic.getLastN( n ) )
                 .orElseThrow( () -> new TopicNotFoundException( "Invalid topic name " + topicName ) );
     }
 
     @Override
     public Message getTopicMessageWithId( String topicName, long msgId ) {
-        Topic topic = getTopic( topicName ).orElseThrow( () -> new TopicNotFoundException( "Invalid topic name " + topicName ) );
+        Topic topic = read( topicName ).orElseThrow( () -> new TopicNotFoundException( "Invalid topic name " + topicName ) );
 
         return topic.getMessages()
                 .stream()
@@ -61,14 +61,14 @@ public class TopicRepository implements ITopicRepository {
 
     @Override
     public Message createMessageForTopic( String topicName, String messageContent ) {
-        Optional<Topic> topic = getTopic( topicName );
+        Optional<Topic> topic = read( topicName );
 
-        Message message = new Message( IdGenerator.nextId(), messageContent, null );
+        Message message = new Message( IdGenerator.nextId(), messageContent, 0 );
 
         if ( topic.isPresent() ) {
             topic.get().addMessage( message );
         } else {
-            createTopic( topicName ).addMessage( message );
+            create( topicName ).addMessage( message );
         }
 
         return message;

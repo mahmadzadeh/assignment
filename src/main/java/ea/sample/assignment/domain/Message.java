@@ -5,11 +5,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class Message {
 
-    private final MessageScore score;
     private long id;
     private String message;
+    private int score;
 
-    public Message( long id, String message, MessageScore score ) {
+    public Message( long id, String message, int score ) {
         this.id = id;
         this.message = message;
         this.score = score;
@@ -18,7 +18,6 @@ public class Message {
     protected Message() {
         // required by Jackson to deserialize object. This is the
         // only time the default constructor is used.
-        score = new NullMessageScore();
     }
 
     public long getId() {
@@ -40,6 +39,10 @@ public class Message {
         return new EqualsBuilder()
                 .append( getId(), message.getId() )
                 .isEquals();
+    }
+
+    public void setScore( int score ) {
+        this.score = score;
     }
 
     @Override

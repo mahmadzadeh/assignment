@@ -12,38 +12,38 @@ import java.util.Set;
 
 @Service
 public class TopicService {
-    private final ea.sample.assignment.dao.ITopicRepository ITopicRepository;
+    private final ea.sample.assignment.dao.ITopicRepository topicRepository;
     private final IScoreQueue scoreQueue;
 
-    public TopicService( ITopicRepository ITopicRepository, IScoreQueue scoreQueue ) {
-        this.ITopicRepository = ITopicRepository;
+    public TopicService( ITopicRepository topicRepository, IScoreQueue scoreQueue ) {
+        this.topicRepository = topicRepository;
         this.scoreQueue = scoreQueue;
     }
 
     public Set<Topic> getTopics() {
-        return ITopicRepository.getTopics();
+        return topicRepository.readAll();
     }
 
     public Topic getTopic( String name ) {
-        Optional<Topic> topic = ITopicRepository.getTopic( name );
+        Optional<Topic> topic = topicRepository.read( name );
 
         return topic.orElseThrow( () -> new TopicNotFoundException( "Unable to find topic with name " + name ) );
     }
 
     public List<Message> getTopicMessages( String topicName, int count ) {
-        return ITopicRepository.getLastNMessages( topicName, count );
+        return topicRepository.getLastNMessages( topicName, count );
     }
 
     public Message getTopicMessage( String topicName, long msgId ) {
-        return ITopicRepository.getTopicMessageWithId( topicName, msgId );
+        return topicRepository.getTopicMessageWithId( topicName, msgId );
     }
 
-    public Message createMessageForTopic( String topicName, Message message ) {
+    public Message createMessageForTopic( String topicName, Message msg ) {
 
-        Message messageForTopic = ITopicRepository.createMessageForTopic( topicName, message.getMessage() );
+        Message message = topicRepository.createMessageForTopic( topicName, msg.getMessage() );
 
         scoreQueue.enqueue( message );
 
-        return messageForTopic;
+        return message;
     }
 }
