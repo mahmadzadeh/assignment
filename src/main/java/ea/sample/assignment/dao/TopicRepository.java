@@ -42,19 +42,19 @@ public class TopicRepository implements ITopicRepository {
     }
 
     @Override
-    public List<Message> getLastNMessages( String topicName, int n ) {
+    public List<Long> getLastNMessages( String topicName, int n ) {
         return read( topicName )
                 .map( topic -> topic.getLastN( n ) )
                 .orElseThrow( () -> new TopicNotFoundException( "Invalid topic name " + topicName ) );
     }
 
     @Override
-    public Message getTopicMessageWithId( String topicName, long msgId ) {
+    public Long getTopicMessageWithId( String topicName, long msgId ) {
         Topic topic = read( topicName ).orElseThrow( () -> new TopicNotFoundException( "Invalid topic name " + topicName ) );
 
         return topic.getMessages()
                 .stream()
-                .filter( msg -> msg.getId() == msgId )
+                .filter( msg -> msg.equals( msgId ) )
                 .findFirst()
                 .orElseThrow( () -> new MessageNotFoundException( "Invalid msg id given" ) );
     }
@@ -64,9 +64,9 @@ public class TopicRepository implements ITopicRepository {
         Optional<Topic> topic = read( topicName );
 
         if ( topic.isPresent() ) {
-            topic.get().addMessage( message );
+            topic.get().addMessage( message.getId() );
         } else {
-            create( topicName ).addMessage( message );
+            create( topicName ).addMessage( message.getId() );
         }
 
         return message;

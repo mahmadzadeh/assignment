@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @WebMvcTest(TopicController.class)
 public class TopicControllerTest {
+
     @Autowired
     MockMvc mockMvc;
 
@@ -125,7 +126,7 @@ public class TopicControllerTest {
     @Test
     public void givenNonExistentTopicThenCreateTopicAndMessage() throws Exception {
 
-        String newMsgJson = "{\"message\":\"newly created message\"}";
+        String newMsgJson = "{\"message\":\"newly created message\", \"userId\":222 }";
 
         when( mockTopicsService.createMessageForTopic( anyString(), any( Message.class ) ) )
                 .thenReturn( new Message( 1, "newly created message", 0, 0 ) );

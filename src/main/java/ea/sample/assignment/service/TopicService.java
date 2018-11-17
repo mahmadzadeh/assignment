@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TopicService {
-    private final ea.sample.assignment.dao.ITopicRepository topicRepository;
+
+    private final ITopicRepository topicRepository;
     private final IScoreQueue scoreQueue;
     private final MessageService messageService;
 
@@ -28,17 +30,22 @@ public class TopicService {
     }
 
     public Topic getTopic( String name ) {
+
         Optional<Topic> topic = topicRepository.read( name );
 
         return topic.orElseThrow( () -> new TopicNotFoundException( "Unable to find topic with name " + name ) );
     }
 
     public List<Message> getTopicMessages( String topicName, int count ) {
-        return topicRepository.getLastNMessages( topicName, count );
+        return topicRepository
+                .getLastNMessages( topicName, count )
+                .stream()
+                .map( id -> messageService.getMessage( id ) )
+                .collect( Collectors.toList() );
     }
 
     public Message getTopicMessage( String topicName, long msgId ) {
-        return topicRepository.getTopicMessageWithId( topicName, msgId );
+        return messageService.getMessage( topicRepository.getTopicMessageWithId( topicName, msgId ) );
     }
 
     public Message createMessageForTopic( String topicName, Message msg ) {

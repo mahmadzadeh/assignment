@@ -8,6 +8,7 @@ public class Message {
     private long id;
     private String message;
     private int score;
+
     private final long userId;
 
     public Message( long id, String message, int score, long userId ) {

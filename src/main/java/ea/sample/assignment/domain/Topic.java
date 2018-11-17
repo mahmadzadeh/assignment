@@ -12,7 +12,7 @@ public class Topic {
 
     private final long id;
     private final String name;
-    private final List<Message> messages;
+    private final List<Long> messages;
 
     public Topic( long id, String name ) {
         this.id = id;
@@ -30,15 +30,15 @@ public class Topic {
         return name;
     }
 
-    public void addMessage( Message msg ) {
+    public void addMessage( long msg ) {
         messages.add( msg );
     }
 
-    public List<Message> getMessages() {
+    public List<Long> getMessages() {
         return unmodifiableList( messages );
     }
 
-    public List<Message> getLastN( int n ) {
+    public List<Long> getLastN( int n ) {
 
         return n > messages.size()
                 ? unmodifiableList( messages )

@@ -1,6 +1,5 @@
 package ea.sample.assignment.dao;
 
-import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
 import org.junit.Before;
@@ -25,8 +24,8 @@ public class TopicRepositoryTest {
     public void setUp() {
         ITopicRepository = new TopicRepository();
 
-        TEST_TOPIC_WITH_2_MSGS.addMessage( new Message( 1, "hey there", 0, 0 ) );
-        TEST_TOPIC_WITH_2_MSGS.addMessage( new Message( 2, "how are ya", 0, 0 ) );
+        TEST_TOPIC_WITH_2_MSGS.addMessage( 1 );
+        TEST_TOPIC_WITH_2_MSGS.addMessage( 2 );
     }
 
 
@@ -75,11 +74,5 @@ public class TopicRepositoryTest {
         assertThat( ITopicRepository.getLastNMessages( TEST_TOPIC_NAME, 10 ).size() )
                 .isEqualTo( 2 );
     }
-
-    @Test
-    public void test() {
-
-    }
-
 
 }

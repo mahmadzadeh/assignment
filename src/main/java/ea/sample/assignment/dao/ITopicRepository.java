@@ -17,9 +17,9 @@ public interface ITopicRepository {
 
     void addTopic( String name, Topic topic );
 
-    List<Message> getLastNMessages( String topicName, int n );
+    List<Long> getLastNMessages( String topicName, int n );
 
-    Message getTopicMessageWithId( String topicName, long msgId );
+    Long getTopicMessageWithId( String topicName, long msgId );
 
     Message createMessageForTopic( String topicName, Message message );
 }
