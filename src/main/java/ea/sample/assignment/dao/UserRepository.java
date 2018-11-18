@@ -45,6 +45,11 @@ public class UserRepository implements IUserRepository {
                 .getSubscribedTopics();
     }
 
+    @Override
+    public int size() {
+        return this.inMemDb.size();
+    }
+
     private boolean isUserInSystem( String email ) {
         return
                 inMemDb.values()

@@ -63,12 +63,12 @@ public class ScoreQueueTest {
         assertEquals( countOfConsumed + whatsLeftInQueue, totalMsgCount );
     }
 
-    private Thread getTestThread( CountDownLatch startLatch, CountDownLatch endLatch, List<List<Message>> messagesSecondThread ) {
+    private Thread getTestThread( CountDownLatch startLatch, CountDownLatch endLatch, List<List<Message>> messagesForThread ) {
         return new Thread( () -> {
             try {
                 try {
                     startLatch.await();
-                    messagesSecondThread.add( queue.dequeueItems( 10 ) );
+                    messagesForThread.add( queue.dequeueItems( 10 ) );
                 } finally {
                     endLatch.countDown();
                 }

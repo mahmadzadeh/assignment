@@ -14,4 +14,6 @@ public interface IUserRepository {
     Optional<User> read( long id );
 
     Set<String> readTopics( long userId );
+
+    int size();
 }

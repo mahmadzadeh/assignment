@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @RestController
 public class UserController {
 
-    private static final int MAX_MSG_COUNT = 10;
     private final UserService userService;
     private final TopicService topicService;
 
@@ -50,8 +49,8 @@ public class UserController {
     }
 
     @PostMapping("/users/{id}/subscriptions")
-    public Topic createSubscriptionForTopic( @PathVariable long id, @RequestBody Topic inputtopic ) {
-        Topic topic = topicService.getTopic( inputtopic.getName() );
+    public Topic createSubscriptionForTopic( @PathVariable long id, @RequestBody Topic inputTopic ) {
+        Topic topic = topicService.getTopic( inputTopic.getName() );
         return userService.createSubscriptionFor( id, topic );
     }
 
