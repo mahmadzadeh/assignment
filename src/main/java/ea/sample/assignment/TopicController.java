@@ -5,10 +5,7 @@ import ea.sample.assignment.dto.MessageCollectionDto;
 import ea.sample.assignment.dto.MessageDto;
 import ea.sample.assignment.dto.TopicCollectionDto;
 import ea.sample.assignment.dto.TopicDto;
-import ea.sample.assignment.exeptions.DuplicateTopicException;
-import ea.sample.assignment.exeptions.InvalidTopicException;
-import ea.sample.assignment.exeptions.MessageNotFoundException;
-import ea.sample.assignment.exeptions.TopicNotFoundException;
+import ea.sample.assignment.exeptions.*;
 import ea.sample.assignment.service.TopicService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +53,11 @@ public class TopicController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private void topicNotFoundException( TopicNotFoundException e ) {
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private void topicNotFoundException( UserNotFoundException e ) {
     }
 
     @ExceptionHandler

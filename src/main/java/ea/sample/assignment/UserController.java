@@ -2,6 +2,7 @@ package ea.sample.assignment;
 
 import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.dto.*;
+import ea.sample.assignment.exeptions.DuplicateUserException;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.exeptions.UserNotFoundException;
 import ea.sample.assignment.service.TopicService;
@@ -69,5 +70,10 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private void topicNotFoundException( TopicNotFoundException e ) {
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private void dudplicatedUserException( DuplicateUserException e ) {
     }
 }

@@ -4,7 +4,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class MessageScoreScheduler {
 
@@ -21,7 +21,7 @@ public class MessageScoreScheduler {
     }
 
     public ScheduledFuture<?> submitTask( ScheduledScoreTask schduledScoreTask ) {
-        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate( schduledScoreTask, 0, pollingFreqInMIllis, SECONDS );
+        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate( schduledScoreTask, 0, pollingFreqInMIllis, MILLISECONDS );
 
         return scheduledFuture;
     }

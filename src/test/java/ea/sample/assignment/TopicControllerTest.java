@@ -144,7 +144,7 @@ public class TopicControllerTest {
     @Test
     public void givenValidTopicThenCreateIt() throws Exception {
 
-        String newMsgJson = "{\"topic\":\"sports\"}";
+        String newMsgJson = "{\"name\":\"sports\"}";
         int topicId = 11;
 
         when( mockTopicsService.createTopic( any( TopicDto.class ) ) ).thenReturn( new Topic( topicId, "sports" ) );
