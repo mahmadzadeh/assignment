@@ -1,7 +1,6 @@
 package ea.sample.assignment.util;
 
 import ea.sample.assignment.domain.Message;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-@Component
 public class ScoreQueue implements IScoreQueue {
 
     private final Queue<Message> queue = new ConcurrentLinkedQueue<>();
