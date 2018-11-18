@@ -4,6 +4,7 @@ import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.domain.User;
 import ea.sample.assignment.dto.UserDto;
+import ea.sample.assignment.exeptions.InvalidTopicException;
 import ea.sample.assignment.exeptions.UserNotFoundException;
 import ea.sample.assignment.service.TopicService;
 import ea.sample.assignment.service.UserService;
@@ -112,25 +113,20 @@ public class UserControllerTest {
     }
 
     @Test
-    public void givenNonExistentTopicThenCreateTopicAndMessage() throws Exception {
+    public void givenNonExistentTopicThenSubscriptionThrowsRuntime() throws Exception {
 
-        String subscriptionTopic = "{\"topic\":\"sports\" }";
+        String subscriptionTopic = "{\"name\":\"gobledygook\" }";
 
-        Topic sportsTopic = new Topic( 111, "sports" );
-
-        when( mockUserService.createSubscriptionFor( anyLong(), any( Topic.class ) ) ).thenReturn( sportsTopic );
-        when( mockTopicService.getTopic( anyString() ) ).thenReturn( new Topic( 222, "sports" ) );
+        when( mockTopicService.getTopic( anyString() ) ).thenThrow( new InvalidTopicException( "invalid topic name" ) );
 
         mockMvc.perform(
                 post( "/users/1111/subscriptions" )
                         .contentType( MediaType.APPLICATION_JSON )
                         .content( subscriptionTopic )
                         .characterEncoding( "utf-8" ) )
-                .andExpect( status().isOk() )
-                .andDo( print() )
-                .andExpect( jsonPath( "name", is( "sports" ) ) );
+                .andExpect( status().isBadRequest() );
 
-        verify( mockUserService ).createSubscriptionFor( anyLong(), any( Topic.class ) );
+        verify( mockTopicService ).getTopic( anyString() );
     }
 
     @Test

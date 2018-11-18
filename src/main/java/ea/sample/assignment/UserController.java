@@ -2,9 +2,7 @@ package ea.sample.assignment;
 
 import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.dto.*;
-import ea.sample.assignment.exeptions.DuplicateUserException;
-import ea.sample.assignment.exeptions.TopicNotFoundException;
-import ea.sample.assignment.exeptions.UserNotFoundException;
+import ea.sample.assignment.exeptions.*;
 import ea.sample.assignment.service.TopicService;
 import ea.sample.assignment.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -57,7 +55,7 @@ public class UserController {
     }
 
     @PostMapping("/users/{id}/subscriptions")
-    public TopicDto createSubscriptionForTopic( @PathVariable long id, @RequestBody Topic inputTopic ) {
+    public TopicDto createSubscriptionForTopic( @PathVariable long id, @RequestBody TopicDto inputTopic ) {
         Topic topic = topicService.getTopic( inputTopic.getName() );
         return new TopicDto( userService.createSubscriptionFor( id, topic ) );
     }
@@ -75,5 +73,15 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     private void dudplicatedUserException( DuplicateUserException e ) {
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private void dudplicatedSubscriptionException( DuplicateSubscriptionException e ) {
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private void invalidTopicException( InvalidTopicException e ) {
     }
 }

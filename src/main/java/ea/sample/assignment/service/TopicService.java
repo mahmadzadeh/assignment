@@ -34,6 +34,9 @@ public class TopicService {
     }
 
     public Topic getTopic( String name ) {
+        if ( isBlank( name ) ) {
+            throw new InvalidTopicException( "Topic name can not be empty. Given " + name );
+        }
 
         Optional<Topic> topic = topicRepository.read( name );
 

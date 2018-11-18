@@ -62,16 +62,23 @@ public class TopicServiceTest {
     public void givenInvalidTopicNameThenThrowTopicNotFound() {
         when( mockTopicRepository.read( anyString() ) ).thenReturn( Optional.empty() );
 
-        topicService.getTopic( anyString() );
+        topicService.getTopic( "something that is not in DB" );
+    }
+
+    @Test(expected = InvalidTopicException.class)
+    public void givenNullTopicNameThenThrowTopicNotFound() {
+        topicService.getTopic( "" );
     }
 
     @Test
     public void givenValidTopicNameThenReturnIt() {
-        when( mockTopicRepository.read( anyString() ) ).thenReturn( Optional.of( new Topic( 1, "sports" ) ) );
+        String sports = "sports";
 
-        Topic topic = topicService.getTopic( anyString() );
+        when( mockTopicRepository.read( anyString() ) ).thenReturn( Optional.of( new Topic( 1, sports ) ) );
 
-        assertThat( topic.getName() ).isEqualTo( "sports" );
+        Topic topic = topicService.getTopic( sports );
+
+        assertThat( topic.getName() ).isEqualTo( sports );
     }
 
     @Test

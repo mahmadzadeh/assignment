@@ -80,6 +80,18 @@ curl http://localhost:8080/topics/sports/messages
 
 echo -e '\n'
 
+echo -e '\n(12) Subscribe Martin to sports topic'
+
+curl -d '{"name":"sports" }' -H "Content-Type: application/json" -X POST http://localhost:8080/users/1/subscriptions
+
+echo -e '\n'
+
+echo -e '\n(13) Get Martins all subs'
+
+curl  http://localhost:8080/users/1/subscriptions
+
+echo -e '\n'
+
 
 
 

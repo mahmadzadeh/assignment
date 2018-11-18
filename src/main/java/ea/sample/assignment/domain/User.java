@@ -45,4 +45,8 @@ public class User {
     public int getRanking() {
         return ranking;
     }
+
+    public boolean isAlreadySubscribed( String name ) {
+        return this.subscribedTopics.contains( name );
+    }
 }
