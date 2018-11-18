@@ -1,5 +1,6 @@
 package ea.sample.assignment.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -8,9 +9,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.util.Collections.unmodifiableList;
 
+@JsonDeserialize(using = TopicDeserializer.class)
 public class Topic {
 
     private final long id;
+
     private final String name;
     private final List<Long> messages;
 
@@ -45,6 +48,10 @@ public class Topic {
                 : unmodifiableList( messages.subList( messages.size() - n, messages.size() ) );
     }
 
+    public long getId() {
+        return id;
+    }
+
 
     @Override
     public boolean equals( Object o ) {
@@ -64,5 +71,14 @@ public class Topic {
         return new HashCodeBuilder( 17, 37 )
                 .append( getName() )
                 .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", messages=" + messages +
+                '}';
     }
 }

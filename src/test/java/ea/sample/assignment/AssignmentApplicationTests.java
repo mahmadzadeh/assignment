@@ -6,10 +6,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static javax.servlet.http.HttpServletResponse.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -23,9 +23,9 @@ public class AssignmentApplicationTests {
 
     @Test
     public void testGettingTopics() {
-        ResponseEntity<Topic> responseEntity = testRestTemplate.getForEntity( "/topics/", Topic.class );
+        ResponseEntity<Topic> responseEntity = testRestTemplate.getForEntity( "/topics", Topic.class );
 
-        assertThat( responseEntity.getStatusCode() ).isEqualTo( SC_OK );
+        assertThat( responseEntity.getStatusCode() ).isEqualTo( HttpStatus.OK );
     }
 
 }

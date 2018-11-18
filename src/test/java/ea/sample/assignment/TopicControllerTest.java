@@ -48,7 +48,7 @@ public class TopicControllerTest {
 
         mockMvc.perform( MockMvcRequestBuilders.get( "/topics/" ) )
                 .andExpect( status().isOk() )
-                .andExpect( jsonPath( "$", hasSize( 1 ) ) );
+                .andExpect( jsonPath( "$.topics", hasSize( 1 ) ) );
     }
 
     @Test
@@ -67,7 +67,6 @@ public class TopicControllerTest {
         mockMvc.perform( MockMvcRequestBuilders.get( "/topics/sport/messages" ) ).andExpect( status().isNotFound() );
 
         verify( mockTopicsService ).getTopicMessages( anyString(), anyInt() );
-
     }
 
     @Test

@@ -7,10 +7,10 @@ public class Message {
 
     private long id;
     private String message;
+
     private int score;
 
     private final long userId;
-
     public Message( long id, String message, int score, long userId ) {
         this.id = id;
         this.message = message;
@@ -43,6 +43,10 @@ public class Message {
         return new EqualsBuilder()
                 .append( getId(), message.getId() )
                 .isEquals();
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public void setScore( int score ) {

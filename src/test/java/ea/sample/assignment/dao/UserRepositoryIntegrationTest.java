@@ -15,11 +15,11 @@ public class UserRepositoryIntegrationTest {
     private UserRepository userRepository;
 
     @Test
-    public void loadTestUserRepository() throws InterruptedException {
+    public void loadAndFunctionalCorrectnessTestOfUserRepository() throws InterruptedException {
         userRepository = new UserRepository();
 
-        int countReadThreads = 2000; // 2K concurrent reads
         int countWriteThreads = 2000; // 2K concurrent writes into repository
+        int countReadThreads = 2000; // 2K concurrent reads
 
         CountDownLatch startLatch = new CountDownLatch( 1 );
         CountDownLatch endLatch = new CountDownLatch( countReadThreads + countWriteThreads );
@@ -43,7 +43,7 @@ public class UserRepositoryIntegrationTest {
     @Ignore
     public void test() throws InterruptedException {
         while ( true ) {
-            loadTestUserRepository();
+            loadAndFunctionalCorrectnessTestOfUserRepository();
         }
     }
 

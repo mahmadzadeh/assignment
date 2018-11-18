@@ -41,4 +41,8 @@ public class User {
     public Set<String> getSubscribedTopics() {
         return unmodifiableSet( this.subscribedTopics );
     }
+
+    public int getRanking() {
+        return ranking;
+    }
 }
