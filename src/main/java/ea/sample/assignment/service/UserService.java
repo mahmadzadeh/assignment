@@ -14,12 +14,10 @@ public class UserService {
 
     private final MessageService messageService;
     private final IUserRepository userRepository;
-    private final TopicService topicService;
 
-    public UserService( IUserRepository userRepository, MessageService messageService, TopicService topicService ) {
+    public UserService( IUserRepository userRepository, MessageService messageService ) {
         this.messageService = messageService;
         this.userRepository = userRepository;
-        this.topicService = topicService;
     }
 
     public Set<User> getUsers() {
@@ -34,18 +32,16 @@ public class UserService {
         return messageService.getUserMessages( userId );
     }
 
-    public Set<Topic> getUserSubscribedTopics( long userId ) {
+    public Set<String> getUserSubscribedTopics( long userId ) {
         return userRepository.readTopics( userId );
     }
 
     public Topic createSubscriptionFor( long userId, Topic topic ) {
 
-        Topic t = topicService.getTopic( topic.getName() );
-
         User user = getUser( userId );
 
         user.subscribe( topic.getName() );
 
-        return t;
+        return topic;
     }
 }

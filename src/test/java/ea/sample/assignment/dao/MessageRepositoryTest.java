@@ -56,7 +56,7 @@ public class MessageRepositoryTest {
     @Test
     public void givenMessageWithIdExistThenReadWillReturnIt() {
 
-        when( mockUserRepo.read( anyLong() ) ).thenReturn( Optional.of( new User( 123, "joe", "email" ) ) );
+        when( mockUserRepo.read( anyLong() ) ).thenReturn( Optional.of( new User( 123, "joe", "email", 0 ) ) );
 
         Message message = messageRepository.create( "one", 0, 123 );
 
@@ -68,8 +68,8 @@ public class MessageRepositoryTest {
 
         long userId = 222;
 
-        when( mockUserRepo.read( userId ) ).thenReturn( Optional.of( new User( userId, "joe", "email" ) ) );
-        when( mockUserRepo.read( 444 ) ).thenReturn( Optional.of( new User( 444, "joe_2", "email_2" ) ) );
+        when( mockUserRepo.read( userId ) ).thenReturn( Optional.of( new User( userId, "joe", "email", 0 ) ) );
+        when( mockUserRepo.read( 444 ) ).thenReturn( Optional.of( new User( 444, "joe_2", "email_2", 0 ) ) );
 
         messageRepository.create( "one", 0, 222 );
         messageRepository.create( "two", 0, 444 );

@@ -5,20 +5,24 @@ import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.domain.User;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.exeptions.UserNotFoundException;
+import ea.sample.assignment.service.TopicService;
 import ea.sample.assignment.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
 
     private static final int MAX_MSG_COUNT = 10;
     private final UserService userService;
+    private final TopicService topicService;
 
-    public UserController( UserService userService ) {
+    public UserController( UserService userService, TopicService topicService ) {
         this.userService = userService;
+        this.topicService = topicService;
     }
 
     @GetMapping("/users")
@@ -38,11 +42,16 @@ public class UserController {
 
     @GetMapping("/users/{id}/subscriptions")
     public Set<Topic> getSubscriptions( @PathVariable long id ) {
-        return userService.getUserSubscribedTopics( id );
+        return userService
+                .getUserSubscribedTopics( id )
+                .stream()
+                .map( topicService::getTopic )
+                .collect( Collectors.toSet() );
     }
 
     @PostMapping("/users/{id}/subscriptions")
-    public Topic createSubscriptionForTopic( @PathVariable long id, @RequestBody Topic topic ) {
+    public Topic createSubscriptionForTopic( @PathVariable long id, @RequestBody Topic inputtopic ) {
+        Topic topic = topicService.getTopic( inputtopic.getName() );
         return userService.createSubscriptionFor( id, topic );
     }
 

@@ -4,6 +4,7 @@ import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.domain.User;
 import ea.sample.assignment.exeptions.UserNotFoundException;
+import ea.sample.assignment.service.TopicService;
 import ea.sample.assignment.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +22,7 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -34,13 +34,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(TopicController.class)
 public class UserControllerTest {
 
-    private final User USER = new User( 1, "name", "email" );
+    private final User USER = new User( 1, "name", "email", 0 );
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
     private UserService mockUserService;
+
+    @MockBean
+    private TopicService mockTopicService;
 
     @Test
     public void getUserShouldReturnAllUsers() throws Exception {
@@ -89,15 +92,18 @@ public class UserControllerTest {
         verify( mockUserService ).getUserMessages( anyLong() );
     }
 
-
     @Test
     public void givenValidUserIdThenGetSubsReturnsAllTopicsSubedByUser() throws Exception {
-        Set<Topic> subscriptions = getListOfTestTopics( 10 );
+        Set<String> subscriptions = getListOfTestTopics( 2 );
 
         when( mockUserService.getUserSubscribedTopics( anyLong() ) ).thenReturn( subscriptions );
+        when( mockTopicService.getTopic( anyString() ) )
+                .thenReturn( new Topic( 222, "sports" ) )
+                .thenReturn( new Topic( 223, "comedy" ) );
 
         mockMvc.perform( MockMvcRequestBuilders.get( "/users/111/subscriptions" )
-                .contentType( MediaType.APPLICATION_XML ) )
+                .contentType( MediaType.APPLICATION_XML )
+                .characterEncoding( "utf-8" ) )
                 .andExpect( status().isOk() )
                 .andExpect( jsonPath( "$", hasSize( subscriptions.size() ) ) );
 
@@ -112,6 +118,7 @@ public class UserControllerTest {
         Topic sportsTopic = new Topic( 111, "sports" );
 
         when( mockUserService.createSubscriptionFor( anyLong(), any( Topic.class ) ) ).thenReturn( sportsTopic );
+        when( mockTopicService.getTopic( anyString() ) ).thenReturn( new Topic( 222, "sports" ) );
 
         mockMvc.perform(
                 post( "/users/1111/subscriptions" )
@@ -136,12 +143,12 @@ public class UserControllerTest {
         return messages;
     }
 
-    private Set<Topic> getListOfTestTopics( int count ) {
+    private Set<String> getListOfTestTopics( int count ) {
 
-        Set<Topic> topics = new HashSet<>();
+        Set<String> topics = new HashSet<>();
 
         for ( int i = 0; i < count; i++ ) {
-            topics.add( new Topic( 111, UUID.randomUUID().toString() ) );
+            topics.add( UUID.randomUUID().toString() );
         }
 
         return topics;

@@ -51,6 +51,7 @@ public class TopicService {
     public Message createMessageForTopic( String topicName, Message msg ) {
 
         Message message = messageService.createMessage( msg.getMessage(), msg.getUserId() );
+
         topicRepository.createMessageForTopic( topicName, message );
 
         scoreQueue.enqueue( message );

@@ -3,18 +3,23 @@ package ea.sample.assignment.domain;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import static java.util.Collections.unmodifiableSet;
+
 public class User {
 
     private final long id;
     private final String name;
     private final String email;
-    private Set<String> topicSubs;
+    private final int ranking;
 
-    public User( long id, String name, String email ) {
+    private Set<String> subscribedTopics;
+
+    public User( long id, String name, String email, int ranking ) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.topicSubs = new CopyOnWriteArraySet<>();
+        this.ranking = ranking;
+        this.subscribedTopics = new CopyOnWriteArraySet<>();
     }
 
     public long getId() {
@@ -30,6 +35,10 @@ public class User {
     }
 
     public void subscribe( String topicName ) {
-        topicSubs.add( topicName );
+        subscribedTopics.add( topicName );
+    }
+
+    public Set<String> getSubscribedTopics() {
+        return unmodifiableSet( this.subscribedTopics );
     }
 }
