@@ -78,7 +78,7 @@ public class TopicControllerTest {
         mockMvc.perform( MockMvcRequestBuilders.get( "/topics/sport/messages" )
                 .contentType( MediaType.APPLICATION_XML ) )
                 .andExpect( status().isOk() )
-                .andExpect( jsonPath( "$", hasSize( messages.size() ) ) );
+                .andExpect( jsonPath( "$.messages", hasSize( messages.size() ) ) );
 
         verify( mockTopicsService ).getTopicMessages( anyString(), anyInt() );
     }

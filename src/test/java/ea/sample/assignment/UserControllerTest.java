@@ -56,7 +56,7 @@ public class UserControllerTest {
 
         mockMvc.perform( MockMvcRequestBuilders.get( "/users" ) )
                 .andExpect( status().isOk() )
-                .andExpect( jsonPath( "$", hasSize( 1 ) ) );
+                .andExpect( jsonPath( "$.users", hasSize( 1 ) ) );
     }
 
 
@@ -87,7 +87,7 @@ public class UserControllerTest {
         mockMvc.perform( MockMvcRequestBuilders.get( "/users/111/messages" )
                 .contentType( MediaType.APPLICATION_XML ) )
                 .andExpect( status().isOk() )
-                .andExpect( jsonPath( "$", hasSize( messages.size() ) ) );
+                .andExpect( jsonPath( "$.messages", hasSize( messages.size() ) ) );
 
         verify( mockUserService ).getUserMessages( anyLong() );
     }
@@ -105,7 +105,7 @@ public class UserControllerTest {
                 .contentType( MediaType.APPLICATION_XML )
                 .characterEncoding( "utf-8" ) )
                 .andExpect( status().isOk() )
-                .andExpect( jsonPath( "$", hasSize( subscriptions.size() ) ) );
+                .andExpect( jsonPath( "$.topics", hasSize( subscriptions.size() ) ) );
 
         verify( mockUserService ).getUserSubscribedTopics( anyLong() );
     }

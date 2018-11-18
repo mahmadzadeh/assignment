@@ -1,6 +1,8 @@
 package ea.sample.assignment;
 
 import ea.sample.assignment.domain.Message;
+import ea.sample.assignment.dto.MessageCollectionDto;
+import ea.sample.assignment.dto.MessageDto;
 import ea.sample.assignment.dto.TopicCollectionDto;
 import ea.sample.assignment.dto.TopicDto;
 import ea.sample.assignment.exeptions.MessageNotFoundException;
@@ -8,8 +10,6 @@ import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.service.TopicService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class TopicController {
@@ -32,18 +32,18 @@ public class TopicController {
     }
 
     @GetMapping("/topics/{topicName}/messages")
-    public List<Message> getTopicMessages( @PathVariable String topicName ) {
-        return topicService.getTopicMessages( topicName, MAX_MSG_COUNT );
+    public MessageCollectionDto getTopicMessages( @PathVariable String topicName ) {
+        return new MessageCollectionDto( topicService.getTopicMessages( topicName, MAX_MSG_COUNT ) );
     }
 
     @GetMapping("/topics/{topicName}/messages/{id}")
-    public Message getTopicMessages( @PathVariable String topicName, @PathVariable long id ) {
-        return topicService.getTopicMessage( topicName, id );
+    public MessageDto getTopicMessages( @PathVariable String topicName, @PathVariable long id ) {
+        return new MessageDto( topicService.getTopicMessage( topicName, id ) );
     }
 
     @PostMapping("/topics/{topicName}/messages")
-    public Message createMessageForTopic( @PathVariable String topicName, @RequestBody Message msg ) {
-        return topicService.createMessageForTopic( topicName, msg );
+    public MessageDto createMessageForTopic( @PathVariable String topicName, @RequestBody Message msg ) {
+        return new MessageDto( topicService.createMessageForTopic( topicName, msg ) );
     }
 
     @ExceptionHandler

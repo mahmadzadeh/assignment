@@ -1,8 +1,7 @@
 package ea.sample.assignment;
 
-import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
-import ea.sample.assignment.domain.User;
+import ea.sample.assignment.dto.*;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.exeptions.UserNotFoundException;
 import ea.sample.assignment.service.TopicService;
@@ -25,33 +24,36 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public Set<User> getUsers() {
-        return userService.getUsers();
+    public UserCollectionDto getUsers() {
+        return new UserCollectionDto( userService.getUsers() );
     }
 
     @GetMapping("/users/{id}")
-    public User getUser( @PathVariable long id ) {
-        return userService.getUser( id );
+    public UserDto getUser( @PathVariable long id ) {
+        return new UserDto( userService.getUser( id ) );
     }
 
     @GetMapping("/users/{id}/messages")
-    public Set<Message> getTopicMessages( @PathVariable long id ) {
-        return userService.getUserMessages( id );
+    public MessageCollectionDto getTopicMessages( @PathVariable long id ) {
+        return new MessageCollectionDto( userService.getUserMessages( id ) );
     }
 
     @GetMapping("/users/{id}/subscriptions")
-    public Set<Topic> getSubscriptions( @PathVariable long id ) {
-        return userService
+    public TopicCollectionDto getSubscriptions( @PathVariable long id ) {
+
+        Set<Topic> topics = userService
                 .getUserSubscribedTopics( id )
                 .stream()
                 .map( topicService::getTopic )
                 .collect( Collectors.toSet() );
+
+        return new TopicCollectionDto( topics );
     }
 
     @PostMapping("/users/{id}/subscriptions")
-    public Topic createSubscriptionForTopic( @PathVariable long id, @RequestBody Topic inputTopic ) {
+    public TopicDto createSubscriptionForTopic( @PathVariable long id, @RequestBody Topic inputTopic ) {
         Topic topic = topicService.getTopic( inputTopic.getName() );
-        return userService.createSubscriptionFor( id, topic );
+        return new TopicDto( userService.createSubscriptionFor( id, topic ) );
     }
 
     @ExceptionHandler
