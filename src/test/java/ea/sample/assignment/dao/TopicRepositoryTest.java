@@ -1,6 +1,8 @@
 package ea.sample.assignment.dao;
 
+import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.exeptions.DuplicateTopicException;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +20,11 @@ public class TopicRepositoryTest {
     private final Topic TEST_TOPIC_WITH_2_MSGS = new Topic( 1, TEST_TOPIC_NAME );
     private final Topic TEST_TOPIC_WITH_NO_MSG = new Topic( 1, TEST_TOPIC_NAME_2 );
 
-    private ea.sample.assignment.dao.ITopicRepository ITopicRepository;
+    private ea.sample.assignment.dao.ITopicRepository topicRepository;
 
     @Before
     public void setUp() {
-        ITopicRepository = new TopicRepository();
+        topicRepository = new TopicRepository();
 
         TEST_TOPIC_WITH_2_MSGS.addMessage( 1 );
         TEST_TOPIC_WITH_2_MSGS.addMessage( 2 );
@@ -31,48 +33,49 @@ public class TopicRepositoryTest {
 
     @Test
     public void givenNotTopicsInDbThenGetTopicsReturnsEmptySet() {
-        assertThat( ITopicRepository.readAll() ).isEqualTo( new HashSet<>() );
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldNotBeAbleToSaveInvalidTopic() {
-        ITopicRepository.addTopic( "name", null );
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void shouldNotBeAbleToSaveInvalidTopicName() {
-        ITopicRepository.addTopic( null, TEST_TOPIC_WITH_2_MSGS );
+        assertThat( topicRepository.readAll() ).isEqualTo( new HashSet<>() );
     }
 
     @Test
     public void canAddNewValidTopic() {
-        ITopicRepository.addTopic( TEST_TOPIC_NAME, TEST_TOPIC_WITH_2_MSGS );
+        topicRepository.create( TEST_TOPIC_NAME );
 
-        assertThat( ITopicRepository.readAll().size() ).isEqualTo( 1 );
+        assertThat( topicRepository.readAll().size() ).isEqualTo( 1 );
     }
 
     @Test
     public void givenTopicsInDbThenGetTopicsReturnsThem() {
-        assertThat( ITopicRepository.readAll() ).isEqualTo( new HashSet<>() );
+        assertThat( topicRepository.readAll() ).isEqualTo( new HashSet<>() );
     }
 
     @Test(expected = TopicNotFoundException.class)
     public void givenTopicNameNonExistentThenGetMessageThrowsRuntime() {
 
-        ITopicRepository.addTopic( TEST_TOPIC_NAME, TEST_TOPIC_WITH_2_MSGS );
+        topicRepository.create( TEST_TOPIC_NAME );
 
-        assertThat( ITopicRepository.getLastNMessages( "bogus topic", 10 ) )
+        assertThat( topicRepository.getLastNMessages( "bogus topic", 10 ) )
                 .isEqualTo( Collections.EMPTY_LIST );
     }
 
     @Test
     public void givenValidTopicNameThenGetMessagesReturnsLastNMessagesForTopic() {
 
-        ITopicRepository.addTopic( TEST_TOPIC_NAME, TEST_TOPIC_WITH_2_MSGS );
-        ITopicRepository.addTopic( TEST_TOPIC_NAME_2, TEST_TOPIC_WITH_NO_MSG );
+        topicRepository.create( TEST_TOPIC_NAME );
+        topicRepository.create( TEST_TOPIC_NAME_2 );
 
-        assertThat( ITopicRepository.getLastNMessages( TEST_TOPIC_NAME, 10 ).size() )
+        topicRepository.createMessageForTopic( TEST_TOPIC_NAME,
+                new Message( 1, "hey", 0, 111 ) );
+        topicRepository.createMessageForTopic( TEST_TOPIC_NAME,
+                new Message( 2, "hey again", 0, 111 ) );
+
+        assertThat( topicRepository.getLastNMessages( TEST_TOPIC_NAME, 10 ).size() )
                 .isEqualTo( 2 );
+    }
+
+    @Test(expected = DuplicateTopicException.class)
+    public void givenTopicAlreadyInSystemThenCreatingItAgainThrowsDuplicateException() {
+        topicRepository.create( TEST_TOPIC_NAME );
+        topicRepository.create( TEST_TOPIC_NAME );
     }
 
 }

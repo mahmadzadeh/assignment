@@ -15,8 +15,6 @@ public interface ITopicRepository {
 
     Optional<Topic> read( String name );
 
-    void addTopic( String name, Topic topic );
-
     List<Long> getLastNMessages( String topicName, int n );
 
     Long getTopicMessageWithId( String topicName, long msgId );

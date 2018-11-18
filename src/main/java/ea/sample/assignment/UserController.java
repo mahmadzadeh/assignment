@@ -28,6 +28,11 @@ public class UserController {
         return new UserCollectionDto( userService.getUsers() );
     }
 
+    @PostMapping("/users")
+    public UserDto createTopic( @RequestBody UserDto userDto ) {
+        return new UserDto( this.userService.createUser( userDto ) );
+    }
+
     @GetMapping("/users/{id}")
     public UserDto getUser( @PathVariable long id ) {
         return new UserDto( userService.getUser( id ) );

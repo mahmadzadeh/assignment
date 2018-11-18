@@ -3,6 +3,8 @@ package ea.sample.assignment.service;
 import ea.sample.assignment.dao.ITopicRepository;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.dto.TopicDto;
+import ea.sample.assignment.exeptions.InvalidTopicException;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.util.ScoreQueue;
 import org.junit.Before;
@@ -11,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -28,10 +31,10 @@ public class TopicServiceTest {
     private final int MESSAGE_ID = 111;
 
     @Mock
-    private ITopicRepository topicRepository;
+    private ITopicRepository mockTopicRepository;
 
     @Mock
-    private ScoreQueue messageScoreQueue;
+    private ScoreQueue mockMessageScoreQueue;
 
     @Mock
     private MessageService mockMessageService;
@@ -43,12 +46,12 @@ public class TopicServiceTest {
 
     @Before
     public void setUp() {
-        topicService = new TopicService( topicRepository, messageScoreQueue, mockMessageService );
+        topicService = new TopicService( mockTopicRepository, mockMessageScoreQueue, mockMessageService );
     }
 
     @Test
     public void givenRepositoryOfTopicsThenGetTopicsReturnAllOfThem() {
-        when( topicRepository.readAll() ).thenReturn( new HashSet<>() );
+        when( mockTopicRepository.readAll() ).thenReturn( new HashSet<>() );
 
         Set<Topic> topics = topicService.getTopics();
 
@@ -57,14 +60,14 @@ public class TopicServiceTest {
 
     @Test(expected = TopicNotFoundException.class)
     public void givenInvalidTopicNameThenThrowTopicNotFound() {
-        when( topicRepository.read( anyString() ) ).thenReturn( Optional.empty() );
+        when( mockTopicRepository.read( anyString() ) ).thenReturn( Optional.empty() );
 
         topicService.getTopic( anyString() );
     }
 
     @Test
     public void givenValidTopicNameThenReturnIt() {
-        when( topicRepository.read( anyString() ) ).thenReturn( Optional.of( new Topic( 1, "sports" ) ) );
+        when( mockTopicRepository.read( anyString() ) ).thenReturn( Optional.of( new Topic( 1, "sports" ) ) );
 
         Topic topic = topicService.getTopic( anyString() );
 
@@ -76,7 +79,7 @@ public class TopicServiceTest {
 
         when( mockMessageService.createMessage( anyString(), anyLong() ) ).thenReturn( testMessage );
 
-        when( topicRepository.createMessageForTopic( anyString(), any( Message.class ) ) )
+        when( mockTopicRepository.createMessageForTopic( anyString(), any( Message.class ) ) )
                 .thenReturn( new Message( 1, "msg", 0, 0 ) );
 
         Message newMsg = topicService.createMessageForTopic( "topic", new Message( 1, "msg", 0, 0 ) );
@@ -89,17 +92,38 @@ public class TopicServiceTest {
     public void newlyCreatedMsgIsQueuedToBeScored() {
         when( mockMessageService.createMessage( anyString(), anyLong() ) ).thenReturn( testMessage );
 
-        when( topicRepository.createMessageForTopic( anyString(), any( Message.class ) ) )
+        when( mockTopicRepository.createMessageForTopic( anyString(), any( Message.class ) ) )
                 .thenReturn( new Message( 1, "msg", 0, 0 ) );
 
-        doNothing().when( messageScoreQueue ).enqueue( any( Message.class ) );
+        doNothing().when( mockMessageScoreQueue ).enqueue( any( Message.class ) );
 
         Message newMsg = topicService.createMessageForTopic( "topic", new Message( 1, "msg", 0, 0 ) );
 
         assertThat( newMsg.getId() ).isEqualTo( MESSAGE_ID );
         assertThat( newMsg.getMessage() ).isEqualTo( MESSAGE_TXT );
 
-        verify( messageScoreQueue ).enqueue( any( Message.class ) );
+        verify( mockMessageScoreQueue ).enqueue( any( Message.class ) );
+    }
+
+
+    @Test(expected = InvalidTopicException.class)
+    public void givenTopicWithInvalidNameThenWhenCreatingThrowException() {
+        topicService.createTopic( new TopicDto( -1, "", Collections.emptyList() ) );
+    }
+
+
+    @Test
+    public void givenValidTopicThenItCanBeCreaed() {
+        String name = "movies";
+
+        Topic newlyCreatedTopic = new Topic( 1, name );
+
+        when( mockTopicRepository.create( name ) ).thenReturn( newlyCreatedTopic );
+
+        Topic topic = topicService.createTopic( new TopicDto( -1, name, Collections.emptyList() ) );
+
+
+        assertThat( newlyCreatedTopic ).isEqualTo( topic );
     }
 
 }

@@ -5,6 +5,8 @@ import ea.sample.assignment.dto.MessageCollectionDto;
 import ea.sample.assignment.dto.MessageDto;
 import ea.sample.assignment.dto.TopicCollectionDto;
 import ea.sample.assignment.dto.TopicDto;
+import ea.sample.assignment.exeptions.DuplicateTopicException;
+import ea.sample.assignment.exeptions.InvalidTopicException;
 import ea.sample.assignment.exeptions.MessageNotFoundException;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.service.TopicService;
@@ -24,6 +26,11 @@ public class TopicController {
     @GetMapping("/topics")
     public TopicCollectionDto getTopics() {
         return new TopicCollectionDto( topicService.getTopics() );
+    }
+
+    @PostMapping("/topics")
+    public TopicDto createTopic( @RequestBody TopicDto topicDto ) {
+        return new TopicDto( topicService.createTopic( topicDto ) );
     }
 
     @GetMapping("/topics/{topicName}")
@@ -55,4 +62,16 @@ public class TopicController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private void topicNotFoundException( MessageNotFoundException e ) {
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private void topicNotFoundException( InvalidTopicException e ) {
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private void duplicateTopicException( DuplicateTopicException e ) {
+    }
+
+
 }

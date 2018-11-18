@@ -4,10 +4,14 @@ import ea.sample.assignment.dao.IUserRepository;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.domain.User;
+import ea.sample.assignment.dto.UserDto;
+import ea.sample.assignment.exeptions.InvalidUserException;
 import ea.sample.assignment.exeptions.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class UserService {
@@ -26,6 +30,14 @@ public class UserService {
 
     public User getUser( long id ) {
         return userRepository.read( id ).orElseThrow( () -> new UserNotFoundException( "Invalid User with id " + id ) );
+    }
+
+    public User createUser( UserDto userDto ) {
+        if ( isBlank( userDto.getName() ) || isBlank( userDto.getEmail() ) ) {
+            throw new InvalidUserException( "Invalid user given. User name and email can not be empty " );
+        }
+
+        return userRepository.create( userDto.getName(), userDto.getEmail() );
     }
 
     public Set<Message> getUserMessages( long userId ) {

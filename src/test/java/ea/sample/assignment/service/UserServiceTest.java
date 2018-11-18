@@ -2,6 +2,9 @@ package ea.sample.assignment.service;
 
 import ea.sample.assignment.dao.IUserRepository;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.domain.User;
+import ea.sample.assignment.dto.UserDto;
+import ea.sample.assignment.exeptions.InvalidUserException;
 import ea.sample.assignment.exeptions.UserNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,5 +50,24 @@ public class UserServiceTest {
         userService.createSubscriptionFor( 1111, new Topic( 11, "" ) );
     }
 
+    @Test(expected = InvalidUserException.class)
+    public void givenInvalidUserWithBadUserNameThenThrowRuntime() {
+        String invalidUsername = "";
+
+        userService.createUser( new UserDto( 1, invalidUsername, "email@email.com", 0,
+                Collections.EMPTY_SET ) );
+    }
+
+    @Test
+    public void givenValidUserWithThenItCanBeCreated() {
+
+        User newlyCreatedUser = new User( 1, "martin", "email@email.com", 0 );
+        when( mockUserRepo.create( "martin", "email@email.com" ) ).thenReturn( newlyCreatedUser );
+
+        User user = userService.createUser( new UserDto( 1, "martin", "email@email.com", 0,
+                Collections.EMPTY_SET ) );
+
+        assertThat( newlyCreatedUser ).isEqualTo( user );
+    }
 
 }

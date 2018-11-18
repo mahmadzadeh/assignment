@@ -2,12 +2,16 @@ package ea.sample.assignment.dao;
 
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.exeptions.DuplicateTopicException;
 import ea.sample.assignment.exeptions.MessageNotFoundException;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.util.IdGenerator;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -15,12 +19,12 @@ public class TopicRepository implements ITopicRepository {
     private final ConcurrentHashMap<String, Topic> inMemDb = new ConcurrentHashMap<>();
 
     @Override
-    public Set<Topic> readAll() {
-        return new HashSet<>( inMemDb.values() );
-    }
-
-    @Override
     public Topic create( String topicName ) {
+
+        if ( topicAlreadyExist( topicName ) ) {
+            throw new DuplicateTopicException( "Topic with name " + topicName + " already in system" );
+        }
+
         Topic topic = new Topic( IdGenerator.nextId(), topicName );
 
         inMemDb.put( topicName, topic );
@@ -29,16 +33,13 @@ public class TopicRepository implements ITopicRepository {
     }
 
     @Override
-    public Optional<Topic> read( String name ) {
-        return Optional.ofNullable( inMemDb.get( name ) );
+    public Set<Topic> readAll() {
+        return new HashSet<>( inMemDb.values() );
     }
 
     @Override
-    public void addTopic( String name, Topic topic ) {
-        Objects.requireNonNull( name );
-        Objects.requireNonNull( topic );
-
-        inMemDb.put( name, topic );
+    public Optional<Topic> read( String name ) {
+        return Optional.ofNullable( inMemDb.get( name ) );
     }
 
     @Override
@@ -70,5 +71,9 @@ public class TopicRepository implements ITopicRepository {
         }
 
         return message;
+    }
+
+    private boolean topicAlreadyExist( String topicName ) {
+        return inMemDb.get( topicName ) != null;
     }
 }

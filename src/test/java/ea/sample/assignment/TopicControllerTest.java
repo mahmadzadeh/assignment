@@ -2,6 +2,7 @@ package ea.sample.assignment;
 
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
+import ea.sample.assignment.dto.TopicDto;
 import ea.sample.assignment.exeptions.MessageNotFoundException;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
 import ea.sample.assignment.service.TopicService;
@@ -139,6 +140,25 @@ public class TopicControllerTest {
 
         verify( mockTopicsService ).createMessageForTopic( anyString(), any( Message.class ) );
     }
+
+    @Test
+    public void givenValidTopicThenCreateIt() throws Exception {
+
+        String newMsgJson = "{\"topic\":\"sports\"}";
+        int topicId = 11;
+
+        when( mockTopicsService.createTopic( any( TopicDto.class ) ) ).thenReturn( new Topic( topicId, "sports" ) );
+
+        mockMvc.perform(
+                post( "/topics" )
+                        .contentType( MediaType.APPLICATION_JSON )
+                        .content( newMsgJson ) )
+                .andExpect( status().isOk() )
+                .andExpect( jsonPath( "id", is( topicId ) ) );
+
+        verify( mockTopicsService ).createTopic( any( TopicDto.class ) );
+    }
+
 
     private List<Message> getListOfTestMessages( int count ) {
 

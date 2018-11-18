@@ -3,6 +3,7 @@ package ea.sample.assignment;
 import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.domain.User;
+import ea.sample.assignment.dto.UserDto;
 import ea.sample.assignment.exeptions.UserNotFoundException;
 import ea.sample.assignment.service.TopicService;
 import ea.sample.assignment.service.UserService;
@@ -130,6 +131,30 @@ public class UserControllerTest {
                 .andExpect( jsonPath( "name", is( "sports" ) ) );
 
         verify( mockUserService ).createSubscriptionFor( anyLong(), any( Topic.class ) );
+    }
+
+    @Test
+    public void givenValidUserThenCreateIt() throws Exception {
+        String expectedEmailAddress = "email@email.com";
+        String expectedUserName = "martin";
+
+        String userJson = "{\"name\":\"martin\", \"email\":\"email@email.com\"}";
+
+        User martin = new User( 1, expectedUserName, expectedEmailAddress, 0 );
+
+        when( mockUserService.createUser( any( UserDto.class ) ) ).thenReturn( martin );
+
+        mockMvc.perform(
+                post( "/users" )
+                        .contentType( MediaType.APPLICATION_JSON )
+                        .content( userJson )
+                        .characterEncoding( "utf-8" ) )
+                .andExpect( status().isOk() )
+                .andDo( print() )
+                .andExpect( jsonPath( "name", is( expectedUserName ) ) )
+                .andExpect( jsonPath( "email", is( expectedEmailAddress ) ) );
+
+        verify( mockUserService ).createUser( any( UserDto.class ) );
     }
 
     private Set<Message> getListOfTestMessages( int count ) {

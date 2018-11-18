@@ -6,16 +6,24 @@ import java.util.List;
 
 public class TopicDto {
 
-    private final long id;
-
-    private final String name;
-
-    private final List<Long> messages;
+    private long id;
+    private String name;
+    private List<Long> messages;
 
     public TopicDto( Topic topic ) {
         this.id = topic.getId();
         this.name = topic.getName();
         this.messages = topic.getMessages();
+    }
+
+    public TopicDto( long id, String name, List<Long> msgs ) {
+        this.id = id;
+        this.name = name;
+        this.messages = msgs;
+    }
+
+    protected TopicDto() {
+
     }
 
     public String getName() {
