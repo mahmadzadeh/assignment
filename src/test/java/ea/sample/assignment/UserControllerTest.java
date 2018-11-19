@@ -18,9 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -152,6 +150,29 @@ public class UserControllerTest {
 
         verify( mockUserService ).createUser( any( UserDto.class ) );
     }
+
+    @Test
+    public void givenUsersWithRankingsInSystemThenRankingsWillReturnTop_N_users() throws Exception {
+
+        List<User> listOfTopUsers = new ArrayList<>();
+
+        listOfTopUsers.add( new User( 1, "user1", "email@mail1", 10000 ) );
+        listOfTopUsers.add( new User( 2, "user2", "email@mail2", 200 ) );
+        listOfTopUsers.add( new User( 3, "user3", "email@mail3", 0 ) );
+        listOfTopUsers.add( new User( 4, "user4", "email@mail4", 1333333 ) );
+
+        when( mockUserService.getTopRanking( anyInt() ) ).thenReturn( listOfTopUsers );
+
+
+        mockMvc.perform( MockMvcRequestBuilders.get( "/users/rankings" )
+                .contentType( MediaType.APPLICATION_XML )
+                .characterEncoding( "utf-8" ) )
+                .andExpect( status().isOk() )
+                .andExpect( jsonPath( "$.rankings", hasSize( listOfTopUsers.size() ) ) );
+
+        verify( mockUserService ).getTopRanking( anyInt() );
+    }
+
 
     private Set<Message> getListOfTestMessages( int count ) {
 

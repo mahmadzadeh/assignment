@@ -5,6 +5,8 @@ import ea.sample.assignment.exeptions.DuplicateUserException;
 import ea.sample.assignment.util.IdGenerator;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,6 +50,16 @@ public class UserRepository implements IUserRepository {
     @Override
     public int size() {
         return this.inMemDb.size();
+    }
+
+    @Override
+    public List<User> readTopRanked( int topN ) {
+
+        List<User> collect = inMemDb.values().stream().collect( Collectors.toList() );
+
+        Collections.sort( collect );
+
+        return collect.size() > topN ? collect.subList( 0, topN ) : collect;
     }
 
     private boolean isUserInSystem( String email ) {

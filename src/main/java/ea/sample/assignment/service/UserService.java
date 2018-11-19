@@ -11,6 +11,7 @@ import ea.sample.assignment.exeptions.UserNotFoundException;
 import ea.sample.assignment.notification.Observables;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -67,5 +68,9 @@ public class UserService {
         observableCollection.add( user, topic.getName() );
 
         return topic;
+    }
+
+    public List<User> getTopRanking( int topN ) {
+        return userRepository.readTopRanked( topN );
     }
 }

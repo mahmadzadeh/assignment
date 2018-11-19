@@ -23,7 +23,10 @@ public class ObserverUser {
 
     /**
      * To simplify and due to shortage of time I just create a unique file with the content of the newly
-     * created message. This is my version of the requirement:
+     * created message. Any time a new message is added to subscribed topic a unique file
+     * is created for the user with the content of the new message.
+     *
+     * This is my version of the requirement:
      * "receive in real-time new messages added to this topic"
      */
     public void update( Message message, String topic ) {

@@ -8,7 +8,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import static java.util.Collections.unmodifiableSet;
 
-public class User {
+public class User implements Comparable<User> {
 
     private final long id;
     private final String name;
@@ -71,5 +71,21 @@ public class User {
         return new HashCodeBuilder( 17, 37 )
                 .append( getEmail() )
                 .toHashCode();
+    }
+
+    @Override
+    public int compareTo( User other ) {
+        return -( ranking - other.ranking );
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", ranking=" + ranking +
+                ", subscribedTopics=" + subscribedTopics +
+                '}';
     }
 }

@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 @RestController
 public class UserController {
 
+    private final int TOP_TEN = 10;
+
     private final UserService userService;
     private final TopicService topicService;
 
@@ -40,6 +42,11 @@ public class UserController {
     @GetMapping("/users/{id}/messages")
     public MessageCollectionDto getTopicMessages( @PathVariable long id ) {
         return new MessageCollectionDto( userService.getUserMessages( id ) );
+    }
+
+    @GetMapping("/users/rankings")
+    public UserRankingsDto getRankings() {
+        return new UserRankingsDto( userService.getTopRanking( TOP_TEN ) );
     }
 
     @GetMapping("/users/{id}/subscriptions")

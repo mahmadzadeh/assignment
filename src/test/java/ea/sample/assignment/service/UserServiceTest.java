@@ -101,5 +101,10 @@ public class UserServiceTest {
         assertThat( newlyCreatedUser ).isEqualTo( user );
     }
 
+    @Test
+    public void given() {
+
+    }
+
 
 }

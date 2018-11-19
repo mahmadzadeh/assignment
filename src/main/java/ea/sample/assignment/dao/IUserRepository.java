@@ -2,6 +2,7 @@ package ea.sample.assignment.dao;
 
 import ea.sample.assignment.domain.User;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -16,4 +17,7 @@ public interface IUserRepository {
     Set<String> readTopics( long userId );
 
     int size();
+
+    List<User> readTopRanked( int topN );
+
 }
