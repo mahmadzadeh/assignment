@@ -3,7 +3,7 @@ package ea.sample.assignment;
 import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.dto.*;
 import ea.sample.assignment.exeptions.*;
-import ea.sample.assignment.service.TopicService;
+import ea.sample.assignment.service.ITopicService;
 import ea.sample.assignment.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +17,9 @@ public class UserController {
     private final int TOP_TEN = 10;
 
     private final UserService userService;
-    private final TopicService topicService;
+    private final ITopicService topicService;
 
-    public UserController( UserService userService, TopicService topicService ) {
+    public UserController( UserService userService, ITopicService topicService ) {
         this.userService = userService;
         this.topicService = topicService;
     }

@@ -45,7 +45,7 @@ public class TopicServiceTest {
 
     private Message testMessage = new Message( MESSAGE_ID, MESSAGE_TXT, 0, USER_ID );
 
-    private TopicService topicService;
+    private ITopicService topicService;
 
 
     @Before

@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
-public class TopicService {
+public class TopicService implements ITopicService {
 
     private final ITopicRepository topicRepository;
     private final IScoreQueue scoreQueue;
@@ -35,10 +35,12 @@ public class TopicService {
         this.observableCollection = observableCollection;
     }
 
+    @Override
     public Set<Topic> getTopics() {
         return topicRepository.readAll();
     }
 
+    @Override
     public Topic getTopic( String name ) {
         if ( isBlank( name ) ) {
             throw new InvalidTopicException( "Topic name can not be empty. Given " + name );
@@ -49,6 +51,7 @@ public class TopicService {
         return topic.orElseThrow( () -> new TopicNotFoundException( "Unable to find topic with name " + name ) );
     }
 
+    @Override
     public Topic createTopic( TopicDto topicDto ) {
 
         if ( isBlank( topicDto.getName() ) ) {
@@ -58,6 +61,7 @@ public class TopicService {
         return topicRepository.create( topicDto.getName() );
     }
 
+    @Override
     public List<Message> getTopicMessages( String topicName, int count ) {
         return topicRepository
                 .getLastNMessages( topicName, count )
@@ -66,10 +70,12 @@ public class TopicService {
                 .collect( Collectors.toList() );
     }
 
+    @Override
     public Message getTopicMessage( String topicName, long msgId ) {
         return messageService.getMessage( topicRepository.getTopicMessageWithId( topicName, msgId ) );
     }
 
+    @Override
     public Message createMessageForTopic( String topicName, Message msg ) {
 
         Message message = messageService.createMessage( msg.getMessage(), msg.getUserId() );

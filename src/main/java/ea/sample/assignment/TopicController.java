@@ -6,7 +6,7 @@ import ea.sample.assignment.dto.MessageDto;
 import ea.sample.assignment.dto.TopicCollectionDto;
 import ea.sample.assignment.dto.TopicDto;
 import ea.sample.assignment.exeptions.*;
-import ea.sample.assignment.service.TopicService;
+import ea.sample.assignment.service.ITopicService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class TopicController {
 
     private static final int MAX_MSG_COUNT = 10;
-    private final TopicService topicService;
+    private final ITopicService topicService;
 
-    public TopicController( TopicService topicService ) {
+    public TopicController( ITopicService topicService ) {
         this.topicService = topicService;
     }
 
