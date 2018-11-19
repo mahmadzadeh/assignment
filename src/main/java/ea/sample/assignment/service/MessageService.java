@@ -2,11 +2,14 @@ package ea.sample.assignment.service;
 
 import ea.sample.assignment.dao.IMessageRepository;
 import ea.sample.assignment.domain.Message;
+import ea.sample.assignment.exeptions.InvalidMessageException;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
 public class MessageService {
@@ -32,7 +35,10 @@ public class MessageService {
     }
 
     public Message createMessage( String msg, long userId ) {
+        if ( isBlank( msg ) ) {
+            throw new InvalidMessageException( "Message content can not be empty" );
+        }
 
-        return messageRepository.create( msg, 0, userId );
+        return messageRepository.create( msg, userId );
     }
 }

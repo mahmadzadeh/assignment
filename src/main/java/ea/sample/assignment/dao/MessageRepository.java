@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @Component
 public class MessageRepository implements IMessageRepository {
 
+    public static final int DEFAULT_STARTING_SCORE = 0;
     private final ConcurrentHashMap<Long, Message> inMemDb = new ConcurrentHashMap<>();
 
     private final IUserRepository userRepository;
@@ -22,13 +23,13 @@ public class MessageRepository implements IMessageRepository {
     }
 
     @Override
-    public Message create( String msg, int score, long userId ) {
+    public Message create( String msg, long userId ) {
 
         if ( !userRepository.read( userId ).isPresent() ) {
             throw new UserNotFoundException( "Unable to create message. Invalid user Id given " + userId );
         }
 
-        Message message = new Message( IdGenerator.nextId(), msg, 0, userId );
+        Message message = new Message( IdGenerator.nextId(), msg, DEFAULT_STARTING_SCORE, userId );
 
         inMemDb.put( message.getId(), message );
 

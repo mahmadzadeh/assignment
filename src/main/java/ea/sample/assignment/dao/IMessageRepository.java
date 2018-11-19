@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface IMessageRepository {
 
-    Message create( String msg, int score, long userId );
+    Message create( String msg, long userId );
 
     Set<Message> readAll();
 

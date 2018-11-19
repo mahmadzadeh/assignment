@@ -75,5 +75,10 @@ public class TopicController {
     private void duplicateTopicException( DuplicateTopicException e ) {
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    private void invalidMessageException( InvalidMessageException e ) {
+    }
+
 
 }

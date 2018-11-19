@@ -37,7 +37,7 @@ public class MessageRepositoryTest {
 
         when( mockUserRepo.read( anyLong() ) ).thenReturn( Optional.empty() );
 
-        messageRepository.create( "msg", 0, 123 );
+        messageRepository.create( "msg", 123 );
 
     }
 
@@ -58,7 +58,7 @@ public class MessageRepositoryTest {
 
         when( mockUserRepo.read( anyLong() ) ).thenReturn( Optional.of( new User( 123, "joe", "email", 0 ) ) );
 
-        Message message = messageRepository.create( "one", 0, 123 );
+        Message message = messageRepository.create( "one", 123 );
 
         assertThat( messageRepository.read( message.getId() ) ).isEqualTo( Optional.of( message ) );
     }
@@ -71,9 +71,9 @@ public class MessageRepositoryTest {
         when( mockUserRepo.read( userId ) ).thenReturn( Optional.of( new User( userId, "joe", "email", 0 ) ) );
         when( mockUserRepo.read( 444 ) ).thenReturn( Optional.of( new User( 444, "joe_2", "email_2", 0 ) ) );
 
-        messageRepository.create( "one", 0, 222 );
-        messageRepository.create( "two", 0, 444 );
-        messageRepository.create( "three", 0, 222 );
+        messageRepository.create( "one", 222 );
+        messageRepository.create( "two", 444 );
+        messageRepository.create( "three", 222 );
 
         Set<Message> messageSet = messageRepository.readMessagesForUser( userId );
 

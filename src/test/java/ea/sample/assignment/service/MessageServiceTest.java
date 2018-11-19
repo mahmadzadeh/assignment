@@ -2,6 +2,7 @@ package ea.sample.assignment.service;
 
 import ea.sample.assignment.dao.IMessageRepository;
 import ea.sample.assignment.domain.Message;
+import ea.sample.assignment.exeptions.InvalidMessageException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -24,7 +25,7 @@ public class MessageServiceTest {
     @Test
     public void newlyCreatedMessagesAlwaysHaveScoreZero() {
 
-        when( mockRepo.create( MESSAGE, 0, USER_ID ) ).thenReturn( mockMessage );
+        when( mockRepo.create( MESSAGE, USER_ID ) ).thenReturn( mockMessage );
 
         MessageService service = new MessageService( mockRepo );
 
@@ -32,5 +33,12 @@ public class MessageServiceTest {
 
     }
 
+    @Test(expected = InvalidMessageException.class)
+    public void invalidMessagesAreNotPersisted() {
+        String invalidMsg = "";
+
+        new MessageService( mockRepo ).createMessage( invalidMsg, 123 );
+
+    }
 
 }
