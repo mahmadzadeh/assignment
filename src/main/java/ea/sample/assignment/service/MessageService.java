@@ -12,7 +12,7 @@ import java.util.Set;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 @Service
-public class MessageService {
+public class MessageService implements IMessageService {
 
     private final IMessageRepository messageRepository;
 
@@ -20,20 +20,24 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
+    @Override
     public Set<Message> getMessages() {
         return messageRepository.readAll();
     }
 
+    @Override
     public Message getMessage( long id ) {
         Optional<Message> message = messageRepository.read( id );
 
         return message.orElseThrow( () -> new TopicNotFoundException( "Unable to find topic with id " + id ) );
     }
 
+    @Override
     public Set<Message> getUserMessages( long userId ) {
         return messageRepository.readMessagesForUser( userId );
     }
 
+    @Override
     public Message createMessage( String msg, long userId ) {
         if ( isBlank( msg ) ) {
             throw new InvalidMessageException( "Message content can not be empty" );

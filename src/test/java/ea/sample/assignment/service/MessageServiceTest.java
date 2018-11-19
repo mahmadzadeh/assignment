@@ -27,7 +27,7 @@ public class MessageServiceTest {
 
         when( mockRepo.create( MESSAGE, USER_ID ) ).thenReturn( mockMessage );
 
-        MessageService service = new MessageService( mockRepo );
+        IMessageService service = new MessageService( mockRepo );
 
         assertThat( service.createMessage( MESSAGE, USER_ID ) ).isEqualTo( mockMessage );
 

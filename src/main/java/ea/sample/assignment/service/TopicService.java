@@ -22,12 +22,12 @@ public class TopicService {
 
     private final ITopicRepository topicRepository;
     private final IScoreQueue scoreQueue;
-    private final MessageService messageService;
+    private final IMessageService messageService;
     private final Observables observableCollection;
 
     public TopicService( ITopicRepository topicRepository,
                          IScoreQueue scoreQueue,
-                         MessageService messageService,
+                         IMessageService messageService,
                          Observables observableCollection ) {
         this.topicRepository = topicRepository;
         this.scoreQueue = scoreQueue;

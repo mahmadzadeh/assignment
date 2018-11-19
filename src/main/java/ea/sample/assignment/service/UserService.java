@@ -19,11 +19,12 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 @Service
 public class UserService {
 
-    private final MessageService messageService;
+    private final IMessageService messageService;
     private final IUserRepository userRepository;
     private final Observables observableCollection;
 
-    public UserService( IUserRepository userRepository, MessageService messageService,
+    public UserService( IUserRepository userRepository,
+                        IMessageService messageService,
                         Observables observableCollection ) {
 
         this.messageService = messageService;
