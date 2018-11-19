@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.Collections.unmodifiableSet;
 
@@ -13,7 +14,7 @@ public class User implements Comparable<User> {
     private final long id;
     private final String name;
     private final String email;
-    private final int ranking;
+    private final AtomicInteger ranking;
 
     private Set<String> subscribedTopics;
 
@@ -21,7 +22,7 @@ public class User implements Comparable<User> {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.ranking = ranking;
+        this.ranking = new AtomicInteger( ranking );
         this.subscribedTopics = new CopyOnWriteArraySet<>();
     }
 
@@ -46,7 +47,7 @@ public class User implements Comparable<User> {
     }
 
     public int getRanking() {
-        return ranking;
+        return ranking.get();
     }
 
     public boolean isAlreadySubscribed( String name ) {
@@ -75,7 +76,7 @@ public class User implements Comparable<User> {
 
     @Override
     public int compareTo( User other ) {
-        return -( ranking - other.ranking );
+        return -( ranking.get() - other.ranking.get() );
     }
 
     @Override
@@ -87,5 +88,9 @@ public class User implements Comparable<User> {
                 ", ranking=" + ranking +
                 ", subscribedTopics=" + subscribedTopics +
                 '}';
+    }
+
+    public void addToRanking( int increment ) {
+        this.ranking.addAndGet( increment );
     }
 }

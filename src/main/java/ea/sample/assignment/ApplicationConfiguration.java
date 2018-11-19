@@ -48,15 +48,15 @@ public class ApplicationConfiguration {
     }
 
 
-    public long scorePollingFreqInMillies() {
+    private long scorePollingFreqInMillies() {
         return 15000;
     }
 
-    public int scoreSchedulerInitialSize() {
+    private int scoreSchedulerInitialSize() {
         return 1;
     }
 
-    public int scoringTaskThreadPoolSize() {
+    private int scoringTaskThreadPoolSize() {
         return 20;
     }
 

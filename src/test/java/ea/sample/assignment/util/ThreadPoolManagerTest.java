@@ -88,5 +88,24 @@ public class ThreadPoolManagerTest {
         verify( fakeQueue ).enqueue( any( Message.class ) );
     }
 
+    @Test
+    public void givenMessagesScoredSuccessfullyThenRelevantUsersRankingIncreased()
+            throws InterruptedException, ExecutionException, TimeoutException {
+
+        List<Message> toBeScored = new ArrayList<Message>() {{
+            add( new Message( 1, "", 0, 0 ) );
+        }};
+
+        when( fakeQueue.dequeueItems( anyInt() ) ).thenReturn( toBeScored );
+        when( fakeComputationResult.get( TIMEOUT, TimeUnit.SECONDS ) ).thenReturn( Optional.of( 10000 ) );
+        when( fakeExecuterService.submit( any( Callable.class ) ) ).thenReturn( fakeComputationResult );
+
+        manager.processMessagesToBeScored( 10 );
+
+        verify( fakeExecuterService, times( 1 ) ).submit( any( Callable.class ) );
+        verify( fakeQueue, times( 0 ) ).enqueue( any( Message.class ) );
+
+    }
+
 
 }

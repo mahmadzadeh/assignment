@@ -9,9 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,4 +64,44 @@ public class UserRepositoryTest {
         assertThat( topics.contains( "comedy" ) ).isTrue();
     }
 
+    @Test
+    public void givenUserRankingsWhenLessThan_N_UsersThenReadTopRankedReturnsAllUsersInDescOrder() {
+
+        User martin = userRepository.create( "martin", "martin@domain.com" );
+        martin.addToRanking( 10 );
+
+        User joe = userRepository.create( "joe", "joe@domain.com" );
+        joe.addToRanking( 20 );
+
+        List<User> users = userRepository.readTopRanked( 10 );
+
+        assertThat( users.size() ).isEqualTo( 2 );
+
+        assertThat( users.get( 0 ) ).isEqualTo( joe );
+        assertThat( users.get( 1 ) ).isEqualTo( martin );
+    }
+
+    @Test
+    public void givenMultipleUsersWithMultipleRankingsThenReadTopRankedReturnsTopN() {
+
+        int userCount = 200;
+
+        getTestUsersWithIncreasingRanking( userCount );
+
+        // rankings will be from 0-199. Top ranked will have ranking from 199 down
+
+        List<User> users = userRepository.readTopRanked( 10 );
+
+        assertThat( users.size() ).isEqualTo( 10 );
+
+        assertThat( users.get( 0 ).getRanking() ).isEqualTo( 199 );
+        assertThat( users.get( 9 ).getRanking() ).isEqualTo( 190 );
+    }
+
+    private void getTestUsersWithIncreasingRanking( int count ) {
+        for ( int i = 0; i < count; i++ ) {
+            User user = userRepository.create( UUID.randomUUID().toString(), UUID.randomUUID().toString() );
+            user.addToRanking( i );
+        }
+    }
 }
