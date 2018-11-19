@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+
+#mvn package && mvn install
+
+java -jar target/assignment-0.0.1-SNAPSHOT.jar&
+
+sleep 10
+
 echo -e '\n(1) Current topics in system\n'
 
 curl http://localhost:8080/topics

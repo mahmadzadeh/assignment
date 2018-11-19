@@ -2,7 +2,9 @@ package ea.sample.assignment;
 
 import com.ea.chat.score.ScorerService;
 import com.ea.chat.score.interfaces.IChatScorer;
+import ea.sample.assignment.service.UserService;
 import ea.sample.assignment.util.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +12,9 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 
 @Configuration
 public class ApplicationConfiguration {
+
+    @Autowired
+    private UserService userService;
 
     @Bean
     public IScoreQueue getScoreQueue() {
@@ -34,7 +39,7 @@ public class ApplicationConfiguration {
                 new ThreadPoolManager(
                         newFixedThreadPool( scoringTaskThreadPoolSize() ),
                         scorer(),
-                        getScoreQueue() );
+                        getScoreQueue(), userService );
     }
 
     @Bean

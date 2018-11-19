@@ -17,8 +17,6 @@ public class ObservablesTest {
 
     private Observables observables;
 
-    ObserverUser testObserver = new ObserverUser( TEST_USER );
-
     @Before
     public void setUp() {
         observables = new Observables();

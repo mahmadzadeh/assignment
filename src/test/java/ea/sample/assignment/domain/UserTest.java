@@ -49,4 +49,8 @@ public class UserTest {
         assertThat( users.get( 5 ).getRanking() ).isEqualTo( 0 );
     }
 
+
+    @Test
+    public void multipleThreadsUpdating() {
+    }
 }

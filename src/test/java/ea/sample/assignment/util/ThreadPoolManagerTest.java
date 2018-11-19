@@ -2,6 +2,8 @@ package ea.sample.assignment.util;
 
 import com.ea.chat.score.interfaces.IChatScorer;
 import ea.sample.assignment.domain.Message;
+import ea.sample.assignment.domain.User;
+import ea.sample.assignment.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,12 +17,19 @@ import java.util.Optional;
 import java.util.concurrent.*;
 
 import static ea.sample.assignment.util.ThreadPoolManager.TIMEOUT;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ThreadPoolManagerTest {
+
+    private final int ranking = 0;
+    private final long userId = 1;
+
+    private User testUser;
+
     @Mock
     private ExecutorService fakeExecuterService;
 
@@ -33,12 +42,16 @@ public class ThreadPoolManagerTest {
     @Mock
     private Future<Optional<Integer>> fakeComputationResult;
 
-    private ThreadPoolManager manager;
+    @Mock
+    private UserService fakeUserService;
 
+
+    private ThreadPoolManager manager;
 
     @Before
     public void setUp() {
-        manager = new ThreadPoolManager( fakeExecuterService, fakeScorer, fakeQueue );
+        manager = new ThreadPoolManager( fakeExecuterService, fakeScorer, fakeQueue, fakeUserService );
+        testUser = new User( userId, "martin", "martin@email.com", ranking );
     }
 
 
@@ -99,12 +112,16 @@ public class ThreadPoolManagerTest {
         when( fakeQueue.dequeueItems( anyInt() ) ).thenReturn( toBeScored );
         when( fakeComputationResult.get( TIMEOUT, TimeUnit.SECONDS ) ).thenReturn( Optional.of( 10000 ) );
         when( fakeExecuterService.submit( any( Callable.class ) ) ).thenReturn( fakeComputationResult );
+        when( fakeUserService.getUser( anyLong() ) ).thenReturn( testUser );
 
         manager.processMessagesToBeScored( 10 );
 
+        assertThat( toBeScored.get( 0 ).getScore() ).isEqualTo( 10000 );
+        assertThat( testUser.getRanking() ).isEqualTo( 10000 );
+
         verify( fakeExecuterService, times( 1 ) ).submit( any( Callable.class ) );
         verify( fakeQueue, times( 0 ) ).enqueue( any( Message.class ) );
-
+        verify( fakeUserService ).getUser( anyLong() );
     }
 
 
