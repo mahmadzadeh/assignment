@@ -6,6 +6,7 @@ import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.dto.TopicDto;
 import ea.sample.assignment.exeptions.InvalidTopicException;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
+import ea.sample.assignment.notification.ObservableTopicCollection;
 import ea.sample.assignment.util.ScoreQueue;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,6 +40,9 @@ public class TopicServiceTest {
     @Mock
     private MessageService mockMessageService;
 
+    @Mock
+    ObservableTopicCollection mockObservableCollection;
+
     private Message testMessage = new Message( MESSAGE_ID, MESSAGE_TXT, 0, USER_ID );
 
     private TopicService topicService;
@@ -46,7 +50,7 @@ public class TopicServiceTest {
 
     @Before
     public void setUp() {
-        topicService = new TopicService( mockTopicRepository, mockMessageScoreQueue, mockMessageService );
+        topicService = new TopicService( mockTopicRepository, mockMessageScoreQueue, mockMessageService, mockObservableCollection );
     }
 
     @Test
@@ -84,6 +88,8 @@ public class TopicServiceTest {
     @Test
     public void givenTopicNameDoesNotExistAndValidMsgThenCreateTopicAndAddMessage() {
 
+        doNothing().when( mockObservableCollection ).onMessageAdded( anyString(), any( Message.class ) );
+
         when( mockMessageService.createMessage( anyString(), anyLong() ) ).thenReturn( testMessage );
 
         when( mockTopicRepository.createMessageForTopic( anyString(), any( Message.class ) ) )
@@ -97,6 +103,9 @@ public class TopicServiceTest {
 
     @Test
     public void newlyCreatedMsgIsQueuedToBeScored() {
+
+        doNothing().when( mockObservableCollection ).onMessageAdded( anyString(), any( Message.class ) );
+
         when( mockMessageService.createMessage( anyString(), anyLong() ) ).thenReturn( testMessage );
 
         when( mockTopicRepository.createMessageForTopic( anyString(), any( Message.class ) ) )

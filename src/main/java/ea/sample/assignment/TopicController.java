@@ -40,14 +40,14 @@ public class TopicController {
         return new MessageCollectionDto( topicService.getTopicMessages( topicName, MAX_MSG_COUNT ) );
     }
 
-    @GetMapping("/topics/{topicName}/messages/{id}")
-    public MessageDto getTopicMessages( @PathVariable String topicName, @PathVariable long id ) {
-        return new MessageDto( topicService.getTopicMessage( topicName, id ) );
-    }
-
     @PostMapping("/topics/{topicName}/messages")
     public MessageDto createMessageForTopic( @PathVariable String topicName, @RequestBody Message msg ) {
         return new MessageDto( topicService.createMessageForTopic( topicName, msg ) );
+    }
+
+    @GetMapping("/topics/{topicName}/messages/{id}")
+    public MessageDto getTopicMessages( @PathVariable String topicName, @PathVariable long id ) {
+        return new MessageDto( topicService.getTopicMessage( topicName, id ) );
     }
 
     @ExceptionHandler

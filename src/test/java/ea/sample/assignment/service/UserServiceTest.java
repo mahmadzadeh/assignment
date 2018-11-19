@@ -7,9 +7,7 @@ import ea.sample.assignment.dto.UserDto;
 import ea.sample.assignment.exeptions.DuplicateSubscriptionException;
 import ea.sample.assignment.exeptions.InvalidUserException;
 import ea.sample.assignment.exeptions.UserNotFoundException;
-import ea.sample.assignment.util.ObservableTopic;
-import ea.sample.assignment.util.ObservableTopicCollection;
-import ea.sample.assignment.util.ObserverUser;
+import ea.sample.assignment.notification.ObservableTopicCollection;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +18,7 @@ import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -80,7 +77,7 @@ public class UserServiceTest {
 
         userService.createSubscriptionFor( 1111, new Topic( 11, "" ) );
 
-        verify( mockObservableCollection ).add( any( ObserverUser.class ), any( ObservableTopic.class ) );
+        verify( mockObservableCollection ).add( any( User.class ), anyString() );
 
     }
 

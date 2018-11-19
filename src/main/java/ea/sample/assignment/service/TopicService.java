@@ -6,6 +6,7 @@ import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.dto.TopicDto;
 import ea.sample.assignment.exeptions.InvalidTopicException;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
+import ea.sample.assignment.notification.ObservableTopicCollection;
 import ea.sample.assignment.util.IScoreQueue;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +23,16 @@ public class TopicService {
     private final ITopicRepository topicRepository;
     private final IScoreQueue scoreQueue;
     private final MessageService messageService;
+    private final ObservableTopicCollection observableCollection;
 
-    public TopicService( ITopicRepository topicRepository, IScoreQueue scoreQueue, MessageService messageService ) {
+    public TopicService( ITopicRepository topicRepository,
+                         IScoreQueue scoreQueue,
+                         MessageService messageService,
+                         ObservableTopicCollection observableCollection ) {
         this.topicRepository = topicRepository;
         this.scoreQueue = scoreQueue;
         this.messageService = messageService;
+        this.observableCollection = observableCollection;
     }
 
     public Set<Topic> getTopics() {
@@ -71,6 +77,8 @@ public class TopicService {
         topicRepository.createMessageForTopic( topicName, message );
 
         scoreQueue.enqueue( message );
+
+        observableCollection.onMessageAdded( topicName, message );
 
         return message;
     }

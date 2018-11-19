@@ -1,5 +1,8 @@
 package ea.sample.assignment.domain;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -48,5 +51,25 @@ public class User {
 
     public boolean isAlreadySubscribed( String name ) {
         return this.subscribedTopics.contains( name );
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) return true;
+
+        if ( !( o instanceof User ) ) return false;
+
+        User user = (User) o;
+
+        return new EqualsBuilder()
+                .append( getEmail(), user.getEmail() )
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder( 17, 37 )
+                .append( getEmail() )
+                .toHashCode();
     }
 }
