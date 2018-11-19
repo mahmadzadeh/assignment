@@ -6,7 +6,7 @@ import ea.sample.assignment.domain.Topic;
 import ea.sample.assignment.dto.TopicDto;
 import ea.sample.assignment.exeptions.InvalidTopicException;
 import ea.sample.assignment.exeptions.TopicNotFoundException;
-import ea.sample.assignment.notification.ObservableTopicCollection;
+import ea.sample.assignment.notification.Observables;
 import ea.sample.assignment.util.ScoreQueue;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class TopicServiceTest {
     private MessageService mockMessageService;
 
     @Mock
-    ObservableTopicCollection mockObservableCollection;
+    Observables mockObservableCollection;
 
     private Message testMessage = new Message( MESSAGE_ID, MESSAGE_TXT, 0, USER_ID );
 

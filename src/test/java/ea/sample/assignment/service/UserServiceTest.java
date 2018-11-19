@@ -7,7 +7,7 @@ import ea.sample.assignment.dto.UserDto;
 import ea.sample.assignment.exeptions.DuplicateSubscriptionException;
 import ea.sample.assignment.exeptions.InvalidUserException;
 import ea.sample.assignment.exeptions.UserNotFoundException;
-import ea.sample.assignment.notification.ObservableTopicCollection;
+import ea.sample.assignment.notification.Observables;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +34,7 @@ public class UserServiceTest {
     private MessageService mockMessageService;
 
     @Mock
-    private ObservableTopicCollection mockObservableCollection;
+    private Observables mockObservableCollection;
 
     private UserService userService;
 

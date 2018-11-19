@@ -8,7 +8,7 @@ import ea.sample.assignment.dto.UserDto;
 import ea.sample.assignment.exeptions.DuplicateSubscriptionException;
 import ea.sample.assignment.exeptions.InvalidUserException;
 import ea.sample.assignment.exeptions.UserNotFoundException;
-import ea.sample.assignment.notification.ObservableTopicCollection;
+import ea.sample.assignment.notification.Observables;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -20,10 +20,10 @@ public class UserService {
 
     private final MessageService messageService;
     private final IUserRepository userRepository;
-    private final ObservableTopicCollection observableCollection;
+    private final Observables observableCollection;
 
     public UserService( IUserRepository userRepository, MessageService messageService,
-                        ObservableTopicCollection observableCollection ) {
+                        Observables observableCollection ) {
 
         this.messageService = messageService;
         this.userRepository = userRepository;

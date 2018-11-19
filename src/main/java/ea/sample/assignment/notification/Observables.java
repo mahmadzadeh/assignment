@@ -4,10 +4,15 @@ import ea.sample.assignment.domain.Message;
 import ea.sample.assignment.domain.User;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Collection of observable topics in the system
+ */
 @Component
-public class ObservableTopicCollection {
+public class Observables {
+
     private final ConcurrentHashMap<String, ObservableTopic> observedTopics =
             new ConcurrentHashMap<>();
 
@@ -26,10 +31,8 @@ public class ObservableTopicCollection {
     }
 
     public void onMessageAdded( String topic, Message message ) {
-
-        ObservableTopic observable = observedTopics.get( topic );
-
-        observable.notify( message );
+        Optional.ofNullable( observedTopics.get( topic ) )
+                .ifPresent( o -> o.notify( message ) );
     }
 
     public int size() {

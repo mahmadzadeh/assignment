@@ -1,6 +1,5 @@
 package ea.sample.assignment.domain;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -9,7 +8,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import static java.util.Collections.unmodifiableList;
 
-@JsonDeserialize(using = TopicDeserializer.class)
 public class Topic {
 
     private final long id;
