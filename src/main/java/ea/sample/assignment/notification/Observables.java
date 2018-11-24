@@ -24,7 +24,7 @@ public class Observables {
         if ( observableTopic == null ) {
             ObservableTopic observable = new ObservableTopic( topic );
             observable.add( observer );
-            observedTopics.put( topic, observable );
+            observedTopics.putIfAbsent( topic, observable );
         } else {
             observableTopic.add( observer );
         }
