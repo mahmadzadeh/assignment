@@ -1,5 +1,29 @@
 # assignment
 
+
+## Specification
+
+Design and implement a simple chat API server meeting the following requirements:
+A user posts a message to a given chat topic.
+If the topic does not exist, create it and add the message to it.
+A user can see the last 10 messages of a topic that he will specify
+A user can subscribe to a topic and receive in real-time new messages added to this topic
+Every message posted by a user is scored using a provided external library com.ea.chat.score.jar (
+this jar is provided by us and can be downloaded from https://s3-us-west-2.amazonaws.com/area52-misc/com.ea.chat.scorer.jar)
+A user can see a ranking of top 10 users with the highest score 
+
+## Technical requirements
+The application must provide the required services over HTTP/TCP/Websockets
+The response can be JSON, XML…
+The application must be thread safe 
+The application should be implemented in Java and/or Scala
+Details are held in memory while the application is running and do not need to be persisted to a file or database
+(Optional) A sample front end to demonstrate and test the application can be provided
+Assessment
+
+
+
+
 This was a fun project!!
 
 I have included the folowing as part of the project.
