@@ -12,13 +12,17 @@ with seemingly random names being generated. Due to shortage of time this is how
 messages to users that have subscribed to a given topic. Sorry about the mess.
 
 -- I'll include the built jar in the target directory so that you can simply run
-java -jar target/assignment-0.0.1-SNAPSHOT.jar ( assumes java to be installed of course )
+java -jar target/assignment-0.0.1-SNAPSHOT.jar ( assumes java to be present of course )
 
 -- Due to shortage of time I was only able to write some perfomance tests - see UserRepositoryIntegrationTest for instance
 
--- The code has a decent test coverage see image included unit_test_coverge.png
+-- I also wrote a very simple performance test to test "Topic" domain object and its use of CopyOnWriteArrayList.
+The test is TopicIntegrationTest.java.
+Observation was that system degrades significantly after about 3K concurrent R/W. The R/W time after this point increases
+in a graph that looks quadratic. So if the expectation is to see more than 3K concurrent R/W a different mechanism should
+be used to ensure thread safty of the domain object.
 
-
+-- The code has a decent test coverage see image included 'unit_test_coverge.png' 
 
 
 
@@ -32,19 +36,6 @@ mutable collections
 ### Data transfer objects - Conversation with outside the application is done via DTOs.
 ### Notification subsystem - Simple observable/observer pattern implemented
 
-
-
-
-
-What I didn't have time to do
-
-
--- Return a proper201 created instead of 200 for create endpoints
--- take in DTOs instead of domain objects
--- make collection of messages in topic thread safe
--- write custom serliazer code beans remove default constructors
--- introduce interfaces where appropriate
--- add more validation to service layer
 
 
 

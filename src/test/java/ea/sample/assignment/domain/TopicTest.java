@@ -48,4 +48,10 @@ public class TopicTest {
         assertThat( lastN.get( 1 ) ).isEqualTo( 3 );
     }
 
+
+    @Test
+    public void performanceTesting() {
+
+    }
+
 }
